@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
+import {onMounted, onUnmounted} from 'vue'
 
 // Declaramos la variable del swiper
 let mySwiper = null;
@@ -7,16 +7,16 @@ let mySwiper = null;
 onMounted(() => {
   // Inicializamos Swiper usando el objeto global (window.Swiper)
   mySwiper = new window.Swiper(".swiper-container", {
-    direction:           "vertical",
-    loop:                true,
-    pagination:          ".swiper-pagination",
-    grabCursor:          true,
-    speed:               1000,
+    direction: "vertical",
+    loop: true,
+    pagination: ".swiper-pagination",
+    grabCursor: true,
+    speed: 1000,
     paginationClickable: true,
-    parallax:            true,
-    autoplay:            false,
-    effect:              "slide",
-    mousewheelControl:   1
+    parallax: true,
+    autoplay: false,
+    effect: "slide",
+    mousewheelControl: 1
   });
 
 
@@ -134,7 +134,7 @@ onUnmounted(() => {
 
   <div class="scroll-hint">
     <span>Scroll</span>
-    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2">
+    <svg fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" viewBox="0 0 24 24">
       <polyline points="6 9 12 15 18 9"/>
     </svg>
   </div>
@@ -145,9 +145,9 @@ onUnmounted(() => {
       <p>Devweb &copy; 2026</p>
     </div>
     <a href="https://jigsaw.w3.org/css-validator/check/referer" target="_blank">
-      <img style="border:0;width:66px;height:23px"
+      <img alt="¡CSS Válido!"
            src="https://jigsaw.w3.org/css-validator/images/vcss"
-           alt="¡CSS Válido!" />
+           style="border:0;width:66px;height:23px"/>
     </a>
   </footer>
 

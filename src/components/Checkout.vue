@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import {computed, ref} from 'vue'
 
 // 1. VARIABLES
 const reserva = ref({
@@ -41,20 +41,20 @@ const procesarPago = () => {
     <section class="checkout-form-section">
       <h2 class="titulo-checkout">Datos para su reservación</h2>
 
-      <form @submit.prevent="procesarPago" class="form-grid">
+      <form class="form-grid" @submit.prevent="procesarPago">
         <div class="input-group">
           <label for="name">Nombre</label>
-          <input id="name" v-model="reserva.nombre" type="text" placeholder="Escribe tu(s) nombre(s)" required>
+          <input id="name" v-model="reserva.nombre" placeholder="Escribe tu(s) nombre(s)" required type="text">
         </div>
 
         <div class="input-group">
           <label for="lastName">Apellidos</label>
-          <input id="lastName" v-model="reserva.apellidos" type="text" required>
+          <input id="lastName" v-model="reserva.apellidos" required type="text">
         </div>
 
         <div class="input-group">
           <label for="email">Email</label>
-          <input id="email" v-model="reserva.email" type="email" required>
+          <input id="email" v-model="reserva.email" required type="email">
         </div>
 
         <div class="input-group">
@@ -63,25 +63,25 @@ const procesarPago = () => {
             <select>
               <option>MX +52</option>
             </select>
-            <input id="phone" v-model="reserva.telefono" type="tel" placeholder="Clave Lada + Teléfono" required>
+            <input id="phone" v-model="reserva.telefono" placeholder="Clave Lada + Teléfono" required type="tel">
           </div>
         </div>
 
         <div class="politicas-reserva">
           <label>
-            <input type="checkbox" v-model="reserva.aceptaTerminos" required>
+            <input v-model="reserva.aceptaTerminos" required type="checkbox">
             He leído y acepto los <a href="#">términos y condiciones</a>.
           </label>
           <p><i class="fa-solid fa-check"></i> Has obtenido el mejor precio disponible reservando directo.</p>
         </div>
 
-        <button type="submit" class="btn btn-continuar">Continuar a Pago</button>
+        <button class="btn btn-continuar" type="submit">Continuar a Pago</button>
       </form>
     </section>
 
     <aside class="checkout-summary">
       <div class="card">
-        <img src="/src/images/Habitacion.jpg" alt="Habitación Tzintzuntzan">
+        <img alt="Habitación Tzintzuntzan" src="/src/images/Habitacion.jpg">
         <div class="card-body">
           <h3 style="color: var(--magenta-deep);">101 - Tzintzuntzan</h3>
           <ul class="features summary-features">

@@ -3,19 +3,19 @@
 }
 
 :root {
-    --magenta-deep:  #A62679;
-    --pink-vibrant:  #F26BCE;
-    --blue-night:    #082B59;
-    --slate-gray:    #343C49;
-    --terracotta:    #B87270;
-    --cream-bg:      #fdfaf5;
-    --white:         #ffffff;
+    --magenta-deep: #A62679;
+    --pink-vibrant: #F26BCE;
+    --blue-night: #082B59;
+    --slate-gray: #343C49;
+    --terracotta: #B87270;
+    --cream-bg: #fdfaf5;
+    --white: #ffffff;
 
-    --magenta:    #A62679;
-    --pink:       #F26BCE;
-    --terra:      #B87270;
-    --slate:      #343C49;
-    --cream:      #fdfaf5;
+    --magenta: #A62679;
+    --pink: #F26BCE;
+    --terra: #B87270;
+    --slate: #343C49;
+    --cream: #fdfaf5;
 }
 
 .quicksand-quicksand {
@@ -143,7 +143,7 @@ footer {
 .site-nav a {
     display: block;
     border-radius: 10px;
-    padding: 8px 14px ;
+    padding: 8px 14px;
     text-decoration: none;
     color: #343C49;
     text-transform: uppercase;
@@ -152,6 +152,7 @@ footer {
     font-weight: 600;
     transition: background-color 0.3s;
 }
+
 .site-nav a:hover,
 .site-nav a.active {
     color: #fff;
@@ -215,18 +216,45 @@ footer {
 }
 
 
+.Quinta-DALAM-1-hex {
+    color: #A62679;
+}
 
-.Quinta-DALAM-1-hex { color: #A62679; }
-.Quinta-DALAM-2-hex { color: #F26BCE; }
-.Quinta-DALAM-3-hex { color: #082B59; }
-.Quinta-DALAM-4-hex { color: #343C49; }
-.Quinta-DALAM-5-hex { color: #B87270; }
+.Quinta-DALAM-2-hex {
+    color: #F26BCE;
+}
 
-.Quinta-DALAM-1-rgba { color: rgba(166, 38, 121, 1); }
-.Quinta-DALAM-2-rgba { color: rgba(242, 107, 206, 1); }
-.Quinta-DALAM-3-rgba { color: rgba(8, 43, 89, 1); }
-.Quinta-DALAM-4-rgba { color: rgba(52, 60, 73, 1); }
-.Quinta-DALAM-5-rgba { color: rgba(184, 114, 112, 1); }
+.Quinta-DALAM-3-hex {
+    color: #082B59;
+}
+
+.Quinta-DALAM-4-hex {
+    color: #343C49;
+}
+
+.Quinta-DALAM-5-hex {
+    color: #B87270;
+}
+
+.Quinta-DALAM-1-rgba {
+    color: rgba(166, 38, 121, 1);
+}
+
+.Quinta-DALAM-2-rgba {
+    color: rgba(242, 107, 206, 1);
+}
+
+.Quinta-DALAM-3-rgba {
+    color: rgba(8, 43, 89, 1);
+}
+
+.Quinta-DALAM-4-rgba {
+    color: rgba(52, 60, 73, 1);
+}
+
+.Quinta-DALAM-5-rgba {
+    color: rgba(184, 114, 112, 1);
+}
 
 .img-01 {
     height: 200px;
@@ -389,11 +417,25 @@ footer {
     margin-top: 5px;
 }
 
-.whatsapp  { background-color: #25D366; }
-.instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
-.facebook  { background-color: #1877F2; }
-.telefono  { background-color: #34B7F1; }
-.correo    { background-color: #EA4335; }
+.whatsapp {
+    background-color: #25D366;
+}
+
+.instagram {
+    background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+}
+
+.facebook {
+    background-color: #1877F2;
+}
+
+.telefono {
+    background-color: #34B7F1;
+}
+
+.correo {
+    background-color: #EA4335;
+}
 
 .habitaciones-main {
     max-width: 1100px;
@@ -734,7 +776,7 @@ body.page-slider .site-nav a.active {
     opacity: 0;
     transform: translateX(-25%);
     transition: opacity 0.85s cubic-bezier(0.215, 0.61, 0.355, 1) 1.15s,
-                transform 0.85s cubic-bezier(0.215, 0.61, 0.355, 1) 1.15s;
+    transform 0.85s cubic-bezier(0.215, 0.61, 0.355, 1) 1.15s;
 }
 
 .slide-title em {
@@ -860,28 +902,29 @@ body.page-slider .site-nav a.active {
 }
 
 @keyframes hintBounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%       { transform: translateX(-50%) translateY(6px); }
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(6px);
+    }
 }
 
 .img-mision {
-    background-image:
-        linear-gradient(rgba(166, 38, 121, 0.3), rgba(8, 43, 89, 0.6)),
-        url('/src/images/head.jpg');
+    background-image: linear-gradient(rgba(166, 38, 121, 0.3), rgba(8, 43, 89, 0.6)),
+    url('/src/images/head.jpg');
     background-color: #2a1030;
 }
 
 .img-vision {
-    background-image:
-        linear-gradient(rgba(8, 43, 89, 0.4), rgba(184, 114, 112, 0.5)),
-        url('/src/images/IMGB.jpg');
+    background-image: linear-gradient(rgba(8, 43, 89, 0.4), rgba(184, 114, 112, 0.5)),
+    url('/src/images/IMGB.jpg');
     background-color: #0e1a2e;
 }
 
 .img-valores {
-    background-image:
-        linear-gradient(rgba(52, 60, 73, 0.4), rgba(166, 38, 121, 0.4)),
-        url('/src/images/head.jpg');
+    background-image: linear-gradient(rgba(52, 60, 73, 0.4), rgba(166, 38, 121, 0.4)),
+    url('/src/images/head.jpg');
     background-color: #1a1018;
 }
 
@@ -911,9 +954,19 @@ body.page-slider .site-nav a.active {
         height: 250px;
     }
 
-    .iconos-contacto { gap: 15px; }
-    .icono-container { width: 50px; height: 50px; font-size: 1.3rem; }
-    .icono-contacto  { min-width: 70px; }
+    .iconos-contacto {
+        gap: 15px;
+    }
+
+    .icono-container {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+
+    .icono-contacto {
+        min-width: 70px;
+    }
 
     .booking-form {
         grid-template-columns: 1fr;
@@ -946,9 +999,19 @@ body.page-slider .site-nav a.active {
 }
 
 @media (max-width: 480px) {
-    .iconos-contacto { gap: 10px; }
-    .icono-container { width: 45px; height: 45px; font-size: 1.2rem; }
-    .icono-contacto span { font-size: 0.8rem; }
+    .iconos-contacto {
+        gap: 10px;
+    }
+
+    .icono-container {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+
+    .icono-contacto span {
+        font-size: 0.8rem;
+    }
 }
 
 .footer-slider {
@@ -995,7 +1058,10 @@ body.page-slider .site-nav a.active {
     .slide-content {
         padding: 2.5rem 2.5rem 2rem 3rem;
     }
-    .slide-title { font-size: 2.6rem; }
+
+    .slide-title {
+        font-size: 2.6rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1014,21 +1080,44 @@ body.page-slider .site-nav a.active {
         justify-content: flex-start;
     }
 
-    .slide-title     { font-size: 2.2rem; }
-    .slide-text      { font-size: 0.95rem; }
-    .slide-meta      { margin-top: 1.2rem; gap: 1.5rem; }
-    .slide-meta-value { font-size: 1.5rem; }
+    .slide-title {
+        font-size: 2.2rem;
+    }
 
-    #conocenos-slider .swiper-pagination { right: 0.8rem !important; }
+    .slide-text {
+        font-size: 0.95rem;
+    }
+
+    .slide-meta {
+        margin-top: 1.2rem;
+        gap: 1.5rem;
+    }
+
+    .slide-meta-value {
+        font-size: 1.5rem;
+    }
+
+    #conocenos-slider .swiper-pagination {
+        right: 0.8rem !important;
+    }
 }
 
 @media (max-width: 480px) {
-    .slide-title   { font-size: 1.9rem; }
-    .slide-content { padding: 1.5rem; }
-    #conocenos-slider { margin-top: 44px; height: calc(100vh - 44px); }
+    .slide-title {
+        font-size: 1.9rem;
+    }
+
+    .slide-content {
+        padding: 1.5rem;
+    }
+
+    #conocenos-slider {
+        margin-top: 44px;
+        height: calc(100vh - 44px);
+    }
 }
 
-#login{
+#login {
     display: flex;
     justify-content: center;
 
@@ -1049,7 +1138,7 @@ body.page-slider .site-nav a.active {
 }
 
 .checkout-summary {
-    flex: 1; 
+    flex: 1;
     min-width: 320px;
 }
 
@@ -1074,7 +1163,7 @@ body.page-slider .site-nav a.active {
 
 .form-grid .input-group input,
 .form-grid .input-group select {
-    border: 1px solid rgba(52, 60, 73, 0.2); 
+    border: 1px solid rgba(52, 60, 73, 0.2);
     border-radius: 6px;
     padding: 10px;
     width: 100%;
@@ -1140,12 +1229,12 @@ body.page-slider .site-nav a.active {
     padding: 8px 12px;
     font-size: 0.85rem;
     box-shadow: none;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .precio-desglose {
     background-color: var(--cream-bg);
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .promo-banner {
@@ -1171,7 +1260,7 @@ body.page-slider .site-nav a.active {
 }
 
 .precio-linea.total {
-    border-top: 2px solid rgba(0,0,0,0.1);
+    border-top: 2px solid rgba(0, 0, 0, 0.1);
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--blue-night);
@@ -1192,6 +1281,7 @@ body.page-slider .site-nav a.active {
         width: 100%;
     }
 }
+
 /* =========================================
    CORRECCIÓN DEL CONTENEDOR VUE (#app)
    ========================================= */

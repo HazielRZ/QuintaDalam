@@ -25,22 +25,22 @@
 
             <div class="input-group">
               <label for="id-hab">ID Habitación</label>
-              <input type="text" id="id-hab" placeholder="Ej. HAB-001">
+              <input id="id-hab" placeholder="Ej. HAB-001" type="text">
             </div>
 
             <div class="input-group">
               <label for="nombre">Nombre / Temática</label>
-              <input type="text" id="nombre" placeholder="Ej. Suite Pátzcuaro">
+              <input id="nombre" placeholder="Ej. Suite Pátzcuaro" type="text">
             </div>
 
             <div class="input-group">
               <label for="capacidad">Capacidad</label>
-              <input type="number" id="capacidad" min="1" placeholder="Ej. 2">
+              <input id="capacidad" min="1" placeholder="Ej. 2" type="number">
             </div>
 
             <div class="input-group">
               <label for="precio">Precio (MXN)</label>
-              <input type="number" id="precio" step="0.01" placeholder="Ej. 1500.00">
+              <input id="precio" placeholder="Ej. 1500.00" step="0.01" type="number">
             </div>
 
             <div class="input-group">
@@ -55,12 +55,12 @@
             <div class="form-actions-container">
               <div class="input-group full-width">
                 <label for="descripcion">Descripción Breve</label>
-                <textarea id="descripcion" rows="1" placeholder="Detalles..."></textarea>
+                <textarea id="descripcion" placeholder="Detalles..." rows="1"></textarea>
               </div>
 
               <div class="button-group">
-                <button type="reset" class="btn-check">Limpiar</button>
-                <button type="submit" class="btn-check">Guardar</button>
+                <button class="btn-check" type="reset">Limpiar</button>
+                <button class="btn-check" type="submit">Guardar</button>
               </div>
             </div>
           </form>
@@ -71,7 +71,7 @@
 
             <h3>Inventario de Habitaciones </h3>
 
-            <input type="text" placeholder="Buscar habitación..." class="search-input">
+            <input class="search-input" placeholder="Buscar habitación..." type="text">
 
           </div>
 
@@ -155,8 +155,6 @@
         </section>
 
 
-
-
       </div>
 
     </main>
@@ -170,9 +168,9 @@
 
     <p>
       <a href="https://jigsaw.w3.org/css-validator/check/referer">
-        <img style="border:0;width:88px;height:31px"
+        <img alt="¡CSS Válido!"
              src="https://jigsaw.w3.org/css-validator/images/vcss"
-             alt="¡CSS Válido!" />
+             style="border:0;width:88px;height:31px"/>
       </a>
     </p>
 

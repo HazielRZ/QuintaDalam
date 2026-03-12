@@ -13,13 +13,13 @@
 
   <main>
     <section class="booking-bar">
-      <form action="Habitaciones.vue" method="GET" class="booking-form">
+      <form action="Habitaciones.vue" class="booking-form" method="GET">
 
         <div class="input-group">
           <label for="pax">Huéspedes</label>
           <select id="pax" name="pax">
             <option value="1">1 habitación, 1 persona</option>
-            <option value="2" selected>1 habitación, 2 personas</option>
+            <option selected value="2">1 habitación, 2 personas</option>
             <option value="3">1 habitación, 3 personas</option>
             <option value="4">2 habitaciones, 4 personas</option>
           </select>
@@ -28,17 +28,17 @@
         <div class="input-group">
           <label>Llegada → Salida</label>
           <div class="date-inputs">
-            <input type="date" name="checkin" required>
-            <input type="date" name="checkout" required>
+            <input name="checkin" required type="date">
+            <input name="checkout" required type="date">
           </div>
         </div>
 
         <div class="input-group">
           <label for="promo">Código promocional</label>
-          <input type="text" id="promo" name="promo" placeholder="Opcional">
+          <input id="promo" name="promo" placeholder="Opcional" type="text">
         </div>
 
-        <button type="submit" class="btn-check">Ver disponibilidad</button>
+        <button class="btn-check" type="submit">Ver disponibilidad</button>
       </form>
     </section>
     <section class="hero">
@@ -77,9 +77,9 @@
 
     <p>
       <a href="https://jigsaw.w3.org/css-validator/check/referer">
-        <img style="border:0;width:88px;height:31px"
+        <img alt="¡CSS Válido!"
              src="https://jigsaw.w3.org/css-validator/images/vcss"
-             alt="¡CSS Válido!" />
+             style="border:0;width:88px;height:31px"/>
       </a>
     </p>
 
