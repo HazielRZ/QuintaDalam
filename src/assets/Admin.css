@@ -48,7 +48,7 @@ body {
 }
 header {
     font-family: "Nunito Sans", sans-serif;
-    background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url("/.idea/head.jpg");
+    background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url("/src/images/head.jpg");
     color: #fff;
     background-size: cover;       
     background-position: center; 
@@ -166,7 +166,6 @@ footer {
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease;
     position: relative;
     margin: 0 auto;
     text-transform: uppercase;
@@ -220,7 +219,7 @@ footer {
     color: #fff;
     padding: 48px 24px;
     font-family: "Inter",sans-serif;
-    background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url("/.idea/IMGB.jpg");
+    background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url("/src/images/IMGB.jpg");
     background-size: cover;
     background-position: center;
     border-radius: 18px;
