@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 // Importamos los datos iniciales de tu JSON
 import habitacionesData from '../Json/habitaciones.json'
 
@@ -48,7 +48,7 @@ const guardarHabitacion = () => {
   }
 
   if (modoEdicion.value && index !== -1) {
-    habitaciones.value[index] = { ...habitaciones.value[index], ...nuevaHab }
+    habitaciones.value[index] = {...habitaciones.value[index], ...nuevaHab}
   } else {
     // Si no existe, la agregamos a la lista
     habitaciones.value.push(nuevaHab)
@@ -79,7 +79,7 @@ const eliminarHabitacion = (id) => {
 
 // Utilidad para formato de moneda en la tabla
 const formatoMoneda = (valor) => {
-  return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(valor)
+  return new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(valor)
 }
 </script>
 
@@ -105,22 +105,23 @@ const formatoMoneda = (valor) => {
             <div class="form-grid">
               <div class="input-group">
                 <label for="id-hab">ID Habitación</label>
-                <input id="id-hab" v-model="form.id" placeholder="Ej. 103" type="text" :disabled="modoEdicion" required>
+                <input id="id-hab" v-model="form.id" :disabled="modoEdicion" placeholder="Ej. 103" required type="text">
               </div>
 
               <div class="input-group">
                 <label for="nombre">Nombre / Temática</label>
-                <input id="nombre" v-model="form.nombre" placeholder="Ej. Suite Pátzcuaro" type="text" required>
+                <input id="nombre" v-model="form.nombre" placeholder="Ej. Suite Pátzcuaro" required type="text">
               </div>
 
               <div class="input-group">
                 <label for="capacidad">Capacidad</label>
-                <input id="capacidad" v-model="form.capacidad" min="1" placeholder="Ej. 2" type="number" required>
+                <input id="capacidad" v-model="form.capacidad" min="1" placeholder="Ej. 2" required type="number">
               </div>
 
               <div class="input-group">
                 <label for="precio">Precio (MXN)</label>
-                <input id="precio" v-model="form.precioBase" placeholder="Ej. 1500.00" step="0.01" type="number" required>
+                <input id="precio" v-model="form.precioBase" placeholder="Ej. 1500.00" required step="0.01"
+                       type="number">
               </div>
 
               <div class="input-group">
@@ -136,11 +137,14 @@ const formatoMoneda = (valor) => {
             <div class="form-actions-container full-width">
               <div class="input-group">
                 <label for="descripcion">Descripción Breve</label>
-                <textarea id="descripcion" v-model="form.descripcion" placeholder="Detalles..." rows="2" required></textarea>
+                <textarea id="descripcion" v-model="form.descripcion" placeholder="Detalles..." required
+                          rows="2"></textarea>
               </div>
 
               <div class="button-group" style="margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end;">
-                <button class="btn-check" style="background-color: #666;" type="button" @click="limpiarFormulario">Cancelar</button>
+                <button class="btn-check" style="background-color: #666;" type="button" @click="limpiarFormulario">
+                  Cancelar
+                </button>
                 <button class="btn-check" type="submit">{{ modoEdicion ? 'Actualizar' : 'Guardar' }}</button>
               </div>
             </div>
@@ -177,8 +181,12 @@ const formatoMoneda = (valor) => {
                 </td>
                 <td>{{ formatoMoneda(hab.precioBase) }}</td>
                 <td class="actions" style="display: flex; gap: 5px;">
-                  <button class="btn" style="background-color: var(--pink-vibrant); color: white;" @click="editarHabitacion(hab)">Editar</button>
-                  <button class="btn" style="background-color: #e74c3c; color: white;" @click="eliminarHabitacion(hab.id)">Eliminar</button>
+                  <button class="btn" style="background-color: var(--pink-vibrant); color: white;"
+                          @click="editarHabitacion(hab)">Editar
+                  </button>
+                  <button class="btn" style="background-color: #e74c3c; color: white;"
+                          @click="eliminarHabitacion(hab.id)">Eliminar
+                  </button>
                 </td>
               </tr>
               </tbody>

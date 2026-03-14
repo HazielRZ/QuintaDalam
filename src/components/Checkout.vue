@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import {computed, onMounted, ref} from 'vue'
 // IMPORTANTE: Verifica que esta ruta a tu JSON sea la correcta
 import habitacionesData from '../Json/habitaciones.json'
 
@@ -85,7 +85,7 @@ const descuento = computed(() => subtotal.value * porcentajeDescuento.value)
 const total = computed(() => subtotal.value - descuento.value)
 
 const formatoMoneda = (valor) => {
-  return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(valor)
+  return new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(valor)
 }
 
 const procesarPago = () => {
@@ -105,50 +105,54 @@ const procesarPago = () => {
         <div class="fechas-group" style="display: flex; gap: 15px; margin-bottom: 20px;">
           <div class="form-group" style="flex: 1;">
             <label for="entrada">Fecha de Entrada</label>
-            <input type="date" id="entrada" v-model="fechaEntrada" @change="validarFechas" :min="formatoInput(hoy)" required>
+            <input id="entrada" v-model="fechaEntrada" :min="formatoInput(hoy)" required type="date"
+                   @change="validarFechas">
           </div>
           <div class="form-group" style="flex: 1;">
             <label for="salida">Fecha de Salida</label>
-            <input type="date" id="salida" v-model="fechaSalida" @change="validarFechas" :min="fechaEntrada" required>
+            <input id="salida" v-model="fechaSalida" :min="fechaEntrada" required type="date" @change="validarFechas">
           </div>
         </div>
 
         <h4 style="margin-bottom: 10px; color: var(--magenta-deep);">Tus Datos</h4>
         <div class="form-group">
           <label for="nombre">Nombre(s)</label>
-          <input type="text" id="nombre" v-model="datos.nombre" required placeholder="Ej. Juan">
+          <input id="nombre" v-model="datos.nombre" placeholder="Ej. Juan" required type="text">
         </div>
 
         <div class="form-group">
           <label for="apellidos">Apellidos</label>
-          <input type="text" id="apellidos" v-model="datos.apellidos" required placeholder="Ej. Pérez">
+          <input id="apellidos" v-model="datos.apellidos" placeholder="Ej. Pérez" required type="text">
         </div>
 
         <div class="form-group">
           <label for="email">Correo Electrónico</label>
-          <input type="email" id="email" v-model="datos.email" required placeholder="correo@ejemplo.com">
+          <input id="email" v-model="datos.email" placeholder="correo@ejemplo.com" required type="email">
         </div>
 
         <div class="form-group">
           <label for="telefono">Teléfono</label>
-          <input type="tel" id="telefono" v-model="datos.telefono" required placeholder="10 dígitos">
+          <input id="telefono" v-model="datos.telefono" placeholder="10 dígitos" required type="tel">
         </div>
 
         <div class="form-checkbox" style="margin: 20px 0;">
-          <input type="checkbox" id="terminos" v-model="datos.aceptaTerminos" required>
-          <label for="terminos" style="margin-left: 10px;">Acepto los términos y políticas del Hotel Quinta Dalam.</label>
+          <input id="terminos" v-model="datos.aceptaTerminos" required type="checkbox">
+          <label for="terminos" style="margin-left: 10px;">Acepto los términos y políticas del Hotel Quinta
+            Dalam.</label>
         </div>
 
         <button class="btn btn-continuar" type="submit">Continuar a Pago</button>
       </form>
     </section>
 
-    <aside class="checkout-summary" v-if="habitacionSeleccionada">
+    <aside v-if="habitacionSeleccionada" class="checkout-summary">
       <div class="card">
         <img :alt="`Habitación ${habitacionSeleccionada.nombre}`" :src="habitacionSeleccionada.imagenes[0]">
 
         <div class="card-body">
-          <h3 style="color: var(--magenta-deep);">{{ habitacionSeleccionada.id }} - {{ habitacionSeleccionada.nombre }}</h3>
+          <h3 style="color: var(--magenta-deep);">{{ habitacionSeleccionada.id }} - {{
+              habitacionSeleccionada.nombre
+            }}</h3>
           <ul class="features summary-features">
             <li style="text-transform: capitalize;">Entrada: {{ formatoElegante(fechaEntrada) }}</li>
             <li style="text-transform: capitalize;">Salida: {{ formatoElegante(fechaSalida) }}</li>
@@ -207,6 +211,7 @@ const procesarPago = () => {
   .checkout-container {
     flex-direction: column-reverse;
   }
+
   .fechas-group {
     flex-direction: column;
   }
