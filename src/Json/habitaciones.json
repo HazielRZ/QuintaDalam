@@ -1,0 +1,37 @@
+[
+  {
+    "id": "101",
+    "nombre": "Tzintzuntzan",
+    "tipo": "Master Suite",
+    "descripcion": "Nuestra habitación más exclusiva. Espaciosa y elegante, con detalles inspirados en el imperio Purépecha.",
+    "precioBase": 2500,
+    "capacidad": 2,
+    "amenidades": [
+      "1 Cama King Size",
+      "Tina de hidromasaje",
+      "Smart TV 55\"",
+      "Aire Acondicionado"
+    ],
+    "imagenes": [
+      "/src/images/Habitacion.jpg"
+    ],
+    "disponible": true
+  },
+  {
+    "id": "102",
+    "nombre": "Pátzcuaro",
+    "tipo": "Suite Familiar",
+    "descripcion": "Espacio de sobra para toda la familia con vistas hermosas.",
+    "precioBase": 3200,
+    "capacidad": 4,
+    "amenidades": [
+      "1 Cama King + 2 Individuales",
+      "Cocineta equipada",
+      "2 Smart TVs"
+    ],
+    "imagenes": [
+      "/src/images/Habitacion5.jpg"
+    ],
+    "disponible": true
+  }
+]

@@ -1,5 +1,11 @@
 <script setup>
+import {useRouter} from 'vue-router'
 
+const router = useRouter()
+
+const buscarDisponibilidad = () => {
+  router.push('/habitaciones')
+}
 </script>
 
 <template>
@@ -13,29 +19,22 @@
 
   <main>
     <section class="booking-bar">
-      <form action="Habitaciones.vue" class="booking-form" method="GET">
+      <form class="booking-form" @submit.prevent="buscarDisponibilidad">
 
         <div class="input-group">
-          <label for="pax">Huéspedes</label>
-          <select id="pax" name="pax">
+          <label for="pas">Huéspedes</label>
+          <select id="pas">
             <option value="1">1 habitación, 1 persona</option>
             <option selected value="2">1 habitación, 2 personas</option>
-            <option value="3">1 habitación, 3 personas</option>
-            <option value="4">2 habitaciones, 4 personas</option>
           </select>
         </div>
 
         <div class="input-group">
-          <label>Llegada → Salida</label>
+          <label>Llegada - Salida</label>
           <div class="date-inputs">
             <input name="checkin" required type="date">
             <input name="checkout" required type="date">
           </div>
-        </div>
-
-        <div class="input-group">
-          <label for="promo">Código promocional</label>
-          <input id="promo" name="promo" placeholder="Opcional" type="text">
         </div>
 
         <button class="btn-check" type="submit">Ver disponibilidad</button>

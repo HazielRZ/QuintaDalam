@@ -54,7 +54,7 @@ body {
 header {
     margin: 0 auto;
     font-family: "Nunito Sans", sans-serif;
-    background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url("../images/head.jpg");
+    background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url("/src/images/head.jpg");
     color: #fff;
     background-size: cover;
     background-position: center;
@@ -161,16 +161,15 @@ footer {
 }
 
 .btn {
-    background-color: var(--magenta-deep);
+    background-color: #f26bce;
     color: white;
-    padding: 8px 30px;
-    border-radius: 50px;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    box-shadow: 0 10px 20px rgba(106, 5, 60, 0.2);
-    transition: transform 0.3s;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    position: relative;
 }
 
 .btn-primary {

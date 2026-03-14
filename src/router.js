@@ -1,12 +1,11 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
-// Importamos todas nuestras vistas
+
 import Home from './views/Home.vue'
 import Habitaciones from './views/Habitaciones.vue'
 import Contacto from './views/Contacto.vue'
 import Conocenos from './views/Conocenos.vue'
 import Galeria from './views/Galeria.vue'
-import Checkout from './components/Checkout.vue'
 import ManejoHabitaciones from "@/views/ManejoHabitaciones.vue";
 
 const routes = [
@@ -15,7 +14,9 @@ const routes = [
     {path: '/contacto', component: Contacto},
     {path: '/conocenos', component: Conocenos},
     {path: '/galeria', component: Galeria},
-    {path: '/reservar', component: Checkout},
+    {
+        path: '/reservar/', name: 'reservar', component: () => import('./components/Checkout.vue')
+    },
     {path: '/manejos', component: ManejoHabitaciones},
 ]
 
