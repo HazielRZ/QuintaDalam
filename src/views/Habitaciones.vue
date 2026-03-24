@@ -24,7 +24,7 @@ const prepararReserva = (idHabitacion) => {
       Encuentra el espacio perfecto para tu estadía. Diseñadas para tu máximo confort.
     </p>
     <RouterLink to="/Alta" class="btn-services" style="margin-left: 15px;">
-      + Agregar Nuevo Servicio
+      Agregar Nueva Habitacion
     </RouterLink>
     <div class="room-list">
       <article

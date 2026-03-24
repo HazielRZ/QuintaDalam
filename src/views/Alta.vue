@@ -17,11 +17,11 @@
         <div class="form-grid">
           <div class="form-group">
             <label for="nombre">Nombre de la Habitación</label>
-            <input type="text" id="nombre" v-model="formulario.nombre" placeholder="Ej. Suite Presidencial" required />
+            <input type="text" id="nombre" v-model="formulario.nombre" placeholder="Ej. Suite Presidencial" required>
           </div>
           <div class="form-group">
             <label for="precio">Precio por Noche (MXN)</label>
-            <input type="number" id="precio" v-model.number="formulario.precio" placeholder="Ej. 1500" min="0" required />
+            <input type="number" id="precio" v-model.number="formulario.precio" placeholder="Ej. 1500" min="0" required>
           </div>
         </div>
         <div class="form-group">
@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
           <label for="foto">Ruta de la Imagen</label>
-          <input type="text" id="foto" v-model="formulario.foto" placeholder="img/habitacion.jpg" required />
+          <input type="text" id="foto" v-model="formulario.foto" placeholder="img/habitacion.jpg" required>
         </div>
         <div class="form-actions">
           <button type="button" class="btn-secondary" @click="cancelarFormulario" v-if="modoEdicion">
@@ -67,7 +67,7 @@
             :class="{ 'card--editing': modoEdicion && indiceEdicion === index }"
         >
           <div class="card-img-wrapper">
-            <img :src="hab.foto" :alt="hab.nombre" class="card-img" @error="onImgError($event)" />
+            <img :src="hab.foto" :alt="hab.nombre" class="card-img" @error="onImgError($event)">
           </div>
           <div class="card-body">
             <h3 class="card-title">{{ hab.nombre }}</h3>
@@ -199,13 +199,13 @@ onMounted(cargarDatos);
 <style scoped>
 /* ── Variables — paleta que hace juego con la app ── */
 .alta-view {
-  --color-primary: hsla(160, 100%, 37%, 1);   /* verde de la app */
+  --color-primary: hsla(160, 100%, 37%, 1);
   --color-primary-hover: hsla(160, 100%, 28%, 1);
   --color-primary-light: hsla(160, 100%, 37%, 0.12);
-  --color-accent: #c0398a;                     /* magenta/rosa de los títulos */
+  --color-accent: #c0398a;
   --color-accent-hover: #a02e72;
   --color-accent-light: rgba(192, 57, 138, 0.1);
-  --color-danger: #c0398a;                     /* usamos el mismo magenta para eliminar */
+  --color-danger: #c0398a;
   --color-danger-light: rgba(192, 57, 138, 0.08);
   --color-success: hsla(160, 100%, 37%, 1);
   --color-text: #2c2c2c;
@@ -247,7 +247,7 @@ onMounted(cargarDatos);
   font-size: 1.9rem;
   font-weight: 800;
   margin: 0;
-  color: var(--color-accent);          /* título magenta igual que en Habitaciones */
+  color: var(--color-accent);
   letter-spacing: -0.5px;
 }
 .subtitle {
@@ -324,7 +324,7 @@ onMounted(cargarDatos);
 
 /* ── Botones ── */
 .btn-primary {
-  background: var(--color-accent);    /* magenta igual que botón "Consultar" */
+  background: var(--color-accent);
   color: white;
   border: none;
   padding: 10px 26px;
@@ -411,7 +411,7 @@ onMounted(cargarDatos);
   font-size: 1.05rem;
   font-weight: 700;
   margin: 0 0 6px;
-  color: var(--color-accent);          /* nombre en magenta igual que en la app */
+  color: var(--color-accent);
 }
 .card-desc {
   font-size: 0.85rem;
