@@ -1298,28 +1298,3 @@ body.page-slider .site-nav a.active {
 .checkout-summary .card-body {
     padding: 20px;
 }
-/* Botón Agregar Habitación */
-.btn-services {
-    display: inline-block;
-    background-color: #c0398a;
-    color: white;
-    text-decoration: none;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    transition: background-color 0.3s, transform 0.15s, box-shadow 0.3s;
-    box-shadow: 0 4px 14px rgba(192, 57, 138, 0.35);
-    margin-bottom: 30px;
-}
-
-.btn-services:hover {
-    background-color: #a02e72;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(192, 57, 138, 0.45);
-}
-
-.btn-services:active {
-    transform: scale(0.97);
-}
