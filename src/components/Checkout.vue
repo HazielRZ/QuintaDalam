@@ -1,6 +1,5 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue'
-// IMPORTANTE: Verifica que esta ruta a tu JSON sea la correcta
 import habitacionesData from '../Json/habitaciones.json'
 
 const habitacionSeleccionada = ref(null)
@@ -9,7 +8,7 @@ const habitacionSeleccionada = ref(null)
 onMounted(() => {
   const idOculto = localStorage.getItem('habitacionSeleccionada')
   if (idOculto) {
-    habitacionSeleccionada.value = habitacionesData.find(h => h.id == idOculto)
+    habitacionSeleccionada.value = habitacionesData.find(h => h.id === idOculto)
   }
   if (!habitacionSeleccionada.value) {
     habitacionSeleccionada.value = habitacionesData[0]

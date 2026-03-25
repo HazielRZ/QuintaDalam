@@ -1,11 +1,21 @@
 <script setup>
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
-
 import habitacionesData from '../Json/habitaciones.json';
 
 const router = useRouter();
-const habitaciones = ref(habitacionesData);
+const habitaciones = ref([]);
+
+onMounted(() => {
+  const guardadas = localStorage.getItem('habitaciones_dalam');
+
+  if (guardadas) {
+    habitaciones.value = JSON.parse(guardadas);
+  } else {
+    habitaciones.value = habitacionesData;
+    localStorage.setItem('habitaciones_dalam', JSON.stringify(habitacionesData));
+  }
+});
 
 const prepararReserva = (idHabitacion) => {
   localStorage.setItem('habitacionSeleccionada', idHabitacion);

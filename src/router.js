@@ -14,7 +14,7 @@ const routes = [
     {path: '/contacto', component: Contacto},
     {path: '/conocenos', component: Conocenos},
     {path: '/galeria', component: Galeria},
-    { path: '/alta', component: Alta },
+    {path: '/alta', component: Alta},
     {
         path: '/reservar/', name: 'reservar', component: () => import('./components/Checkout.vue')
     },

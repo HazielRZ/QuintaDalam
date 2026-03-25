@@ -1,6 +1,6 @@
 <script setup>
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import {useRouter} from 'vue-router'
+import {ref} from 'vue'
 
 const router = useRouter()
 
@@ -62,7 +62,7 @@ const secciones = [
         Un refugio de lujo en el corazón de un pueblo mágico.<br>
         Naturaleza, confort y cultura en un solo lugar.
       </p>
-      <RouterLink to="/habitaciones" class="btn-hero">Ver habitaciones</RouterLink>
+      <RouterLink class="btn-hero" to="/habitaciones">Ver habitaciones</RouterLink>
     </div>
 
     <!-- BARRA DE RESERVA FLOTANTE -->
@@ -100,9 +100,10 @@ const secciones = [
           <h2 class="section-titulo">Descubre Quencio</h2>
           <p class="section-sub">Un pueblo mágico escondido en Michoacán</p>
           <p class="about-desc">
-            Somos un hotel ubicado en Quencio, Michoacán. Un destino que combina la calidez de la cultura local con el confort de espacios únicos diseñados para tu descanso. Cada rincón de Quinta Dalam cuenta una historia.
+            Somos un hotel ubicado en Quencio, Michoacán. Un destino que combina la calidez de la cultura local con el
+            confort de espacios únicos diseñados para tu descanso. Cada rincón de Quinta Dalam cuenta una historia.
           </p>
-          <RouterLink to="/conocenos" class="btn-magenta">Conoce más</RouterLink>
+          <RouterLink class="btn-magenta" to="/conocenos">Conoce más</RouterLink>
         </div>
         <div class="about-stats">
           <div class="stat-card">
@@ -157,23 +158,35 @@ const secciones = [
             <li>Cancelación flexible según disponibilidad</li>
             <li>Atención personalizada desde tu reserva</li>
           </ul>
-          <RouterLink to="/reservar" class="btn-blanco">Reservar ahora</RouterLink>
+          <RouterLink class="btn-blanco" to="/reservar">Reservar ahora</RouterLink>
         </div>
         <div class="reserva-features">
           <div class="feature-pill">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                 stroke-width="2.5" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
             Reservaciones directas
           </div>
           <div class="feature-pill">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                 stroke-width="2.5" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
             Amenidades incluidas
           </div>
           <div class="feature-pill">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                 stroke-width="2.5" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
             Ubicación privilegiada
           </div>
           <div class="feature-pill">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                 stroke-width="2.5" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
             Gastronomía local
           </div>
         </div>
@@ -213,7 +226,7 @@ const secciones = [
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(rgba(8,43,89,0.55), rgba(8,43,89,0.7)), url('/src/images/head.jpg');
+  background-image: linear-gradient(rgba(8, 43, 89, 0.55), rgba(8, 43, 89, 0.7)), url('/src/images/head.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -222,7 +235,7 @@ const secciones = [
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 20% 60%, rgba(242,107,206,0.12) 0%, transparent 55%);
+  background: radial-gradient(ellipse at 20% 60%, rgba(242, 107, 206, 0.12) 0%, transparent 55%);
 }
 
 .hero-content {
@@ -236,7 +249,10 @@ const secciones = [
 }
 
 @keyframes fadeUp {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-tag {
@@ -246,7 +262,7 @@ const secciones = [
   letter-spacing: 3px;
   text-transform: uppercase;
   color: #B87270;
-  border: 1px solid rgba(184,114,112,0.5);
+  border: 1px solid rgba(184, 114, 112, 0.5);
   padding: 5px 16px;
   border-radius: 3px;
   margin-bottom: 20px;
@@ -259,7 +275,7 @@ const secciones = [
   color: #fff;
   margin: 0 0 10px;
   letter-spacing: 6px;
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .hero-sub {
@@ -267,7 +283,7 @@ const secciones = [
   font-weight: 600;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255, 255, 255, 0.65);
   margin: 0 0 24px;
 }
 
@@ -280,7 +296,7 @@ const secciones = [
 
 .hero-desc {
   font-size: 1rem;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.8;
   margin: 0 0 36px;
   font-weight: 300;
@@ -316,7 +332,7 @@ const secciones = [
   background: #fff;
   border-radius: 10px;
   padding: 20px 28px;
-  box-shadow: 0 15px 40px rgba(8,43,89,0.18);
+  box-shadow: 0 15px 40px rgba(8, 43, 89, 0.18);
   z-index: 10;
 }
 
@@ -334,8 +350,13 @@ const secciones = [
   padding: 0 20px;
 }
 
-.input-group:first-child { padding-left: 0; }
-.input-group:last-of-type { border-right: none; }
+.input-group:first-child {
+  padding-left: 0;
+}
+
+.input-group:last-of-type {
+  border-right: none;
+}
 
 .input-group label {
   font-size: 0.68rem;
@@ -357,7 +378,10 @@ const secciones = [
   font-family: 'Nunito Sans', sans-serif;
 }
 
-.date-inputs { display: flex; gap: 8px; }
+.date-inputs {
+  display: flex;
+  gap: 8px;
+}
 
 .btn-check {
   background: #F26BCE;
@@ -376,7 +400,9 @@ const secciones = [
   margin-left: 20px;
 }
 
-.btn-check:hover { background: #A62679; }
+.btn-check:hover {
+  background: #A62679;
+}
 
 /* ── MAIN ── */
 .home-main {
@@ -391,7 +417,7 @@ const secciones = [
   border-radius: 12px;
   padding: 48px 40px;
   margin-bottom: 28px;
-  box-shadow: 0 10px 25px rgba(15,23,42,0.08);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
 }
 
 .about-inner {
@@ -411,7 +437,9 @@ const secciones = [
   margin-bottom: 10px;
 }
 
-.section-tag.light { color: rgba(255,255,255,0.65); }
+.section-tag.light {
+  color: rgba(255, 255, 255, 0.65);
+}
 
 .section-titulo {
   font-family: 'Bodoni Moda SC', serif;
@@ -450,7 +478,9 @@ const secciones = [
   transition: background 0.3s;
 }
 
-.btn-magenta:hover { background: #082B59; }
+.btn-magenta:hover {
+  background: #082B59;
+}
 
 .about-stats {
   display: grid;
@@ -469,7 +499,9 @@ const secciones = [
   transition: transform 0.25s;
 }
 
-.stat-card:hover { transform: translateY(-3px); }
+.stat-card:hover {
+  transform: translateY(-3px);
+}
 
 .stat-num {
   font-family: 'Bodoni Moda SC', serif;
@@ -490,7 +522,7 @@ const secciones = [
   border-radius: 12px;
   padding: 48px 40px;
   margin-bottom: 28px;
-  box-shadow: 0 10px 25px rgba(15,23,42,0.08);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
 }
 
 .secciones-header {
@@ -518,14 +550,14 @@ const secciones = [
 .seccion-card:hover {
   border-color: #F26BCE;
   transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(166,38,121,0.12);
+  box-shadow: 0 12px 28px rgba(166, 38, 121, 0.12);
 }
 
 .seccion-icon {
   width: 50px;
   height: 50px;
   border-radius: 10px;
-  background: rgba(242,107,206,0.12);
+  background: rgba(242, 107, 206, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -534,7 +566,9 @@ const secciones = [
   transition: background 0.3s;
 }
 
-.seccion-card:hover .seccion-icon { background: rgba(166,38,121,0.18); }
+.seccion-card:hover .seccion-icon {
+  background: rgba(166, 38, 121, 0.18);
+}
 
 .seccion-titulo {
   font-family: 'Bodoni Moda SC', serif;
@@ -559,7 +593,9 @@ const secciones = [
   color: #A62679;
 }
 
-.seccion-card:hover .seccion-link { color: #F26BCE; }
+.seccion-card:hover .seccion-link {
+  color: #F26BCE;
+}
 
 /* RESERVA */
 .reserva-section {
@@ -593,9 +629,9 @@ const secciones = [
 
 .reserva-lista li {
   font-size: 0.88rem;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255, 255, 255, 0.8);
   padding: 8px 0 8px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   font-weight: 300;
 }
@@ -621,36 +657,72 @@ const secciones = [
   transition: background 0.3s, color 0.3s;
 }
 
-.btn-blanco:hover { background: #F26BCE; color: #fff; }
+.btn-blanco:hover {
+  background: #F26BCE;
+  color: #fff;
+}
 
-.reserva-features { display: flex; flex-direction: column; gap: 12px; }
+.reserva-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
 .feature-pill {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 14px 18px;
   color: #fff;
   font-size: 0.88rem;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.feature-pill svg { color: #F26BCE; flex-shrink: 0; }
+.feature-pill svg {
+  color: #F26BCE;
+  flex-shrink: 0;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .booking-form { grid-template-columns: 1fr; }
-  .input-group { border-right: none; border-bottom: 1px solid #eee; padding: 10px 0; }
-  .btn-check { margin-left: 0; margin-top: 8px; }
-  .about-inner, .reserva-inner { grid-template-columns: 1fr; gap: 28px; }
-  .home-main { padding: 80px 16px 40px; }
-  .about-section, .secciones-section, .reserva-section { padding: 32px 20px; }
-  .secciones-grid { grid-template-columns: 1fr 1fr; }
+  .booking-form {
+    grid-template-columns: 1fr;
+  }
+
+  .input-group {
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+  }
+
+  .btn-check {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+
+  .about-inner, .reserva-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .home-main {
+    padding: 80px 16px 40px;
+  }
+
+  .about-section, .secciones-section, .reserva-section {
+    padding: 32px 20px;
+  }
+
+  .secciones-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 480px) {
-  .secciones-grid { grid-template-columns: 1fr; }
+  .secciones-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
