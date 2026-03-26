@@ -181,38 +181,284 @@ const procesarPago = () => {
 </template>
 
 <style scoped>
+/* Encabezado */
+.checkout-header {
+  background: #082B59;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  margin-bottom: 30px;
+}
+.checkout-header h1 {
+  font-family: 'Bodoni Moda SC', serif;
+  margin: 0;
+  letter-spacing: 2px;
+}
 
+/* Contenedor Principal */
 .checkout-container {
   display: flex;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  gap: 2.5rem;
+  max-width: 1100px;
+  margin: 0 auto 60px auto;
+  padding: 0 20px;
+  align-items: flex-start; /* Importante para el aside sticky */
 }
 
-.checkout-form {
-  flex: 2;
+/* Columna Izquierda (Formulario) */
+.checkout-form-section {
+  flex: 1.8;
 }
 
-.checkout-summary {
-  flex: 1;
+.form-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea;
+}
+
+.form-card h2 {
+  color: #082B59;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+}
+
+.section-title {
+  color: #A62679;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.fechas-group, .datos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: 5px;
+  padding: 12px 15px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s;
 }
 
-@media (max-width: 768px) {
+.form-group input:focus {
+  outline: none;
+  border-color: #A62679;
+  box-shadow: 0 0 0 3px rgba(166, 38, 121, 0.1);
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 30px 0;
+}
+
+.form-checkbox label {
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.btn-continuar {
+  width: 100%;
+  padding: 16px;
+  background: #A62679;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-continuar:hover {
+  background: #8b1f64;
+  transform: translateY(-2px);
+}
+
+/* Columna Derecha (Resumen Sticky) */
+.checkout-summary {
+  flex: 1;
+  position: sticky;
+  top: 20px; /* Hace que el recibo baje contigo al hacer scroll */
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #eaeaea;
+}
+
+.summary-img-wrapper {
+  width: 100%;
+  height: 200px;
+}
+
+.summary-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.summary-body {
+  padding: 25px 25px 15px;
+}
+
+.room-type {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  font-weight: bold;
+}
+
+.room-name {
+  color: #082B59;
+  font-family: 'Bodoni Moda SC', serif;
+  font-size: 1.5rem;
+  margin: 5px 0 20px;
+}
+
+.stay-details {
+  display: flex;
+  justify-content: space-between;
+  background: #f4f7fb;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.stay-date small {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.stay-date p {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+  text-transform: capitalize;
+}
+
+.stay-date:last-child {
+  text-align: right;
+}
+
+.stay-duration {
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Desglose de Precios */
+.precio-desglose {
+  background: #fafafa;
+  padding: 25px;
+  border-top: 1px dashed #ddd;
+}
+
+.promo-banner {
+  background: rgba(166, 38, 121, 0.1);
+  color: #A62679;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.precio-linea {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.precio-linea.descuento {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.precio-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #eaeaea;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #082B59;
+}
+
+.precio-total span:last-child {
+  font-size: 1.5rem;
+  color: #A62679;
+}
+
+.precio-total small {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
   .checkout-container {
-    flex-direction: column-reverse;
+    flex-direction: column-reverse; /* El carrito aparece arriba en móvil */
   }
 
-  .fechas-group {
-    flex-direction: column;
+  .checkout-summary {
+    position: static;
+    width: 100%;
+  }
+
+  .form-card {
+    padding: 25px;
+  }
+
+  .fechas-group, .datos-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
 }
 </style>

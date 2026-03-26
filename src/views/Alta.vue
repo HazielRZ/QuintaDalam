@@ -6,40 +6,50 @@
       </nav>
       <div class="header-content">
         <h1>Gestión de Habitaciones</h1>
-        <p class="subtitle">Administra el catálogo de habitaciones disponibles</p>
+        <p class="subtitle">Administra el catálogo de habitaciones disponibles en Quinta Dalam</p>
       </div>
     </header>
 
-    <!-- FORMULARIO: Alta y Edición -->
     <section class="form-container">
       <h2>{{ modoEdicion ? '✏️ Editar Habitación' : '🛏️ Nueva Habitación' }}</h2>
       <form @submit.prevent="procesarFormulario">
         <div class="form-grid">
           <div class="form-group">
             <label for="nombre">Nombre de la Habitación</label>
-            <input id="nombre" v-model="formulario.nombre" placeholder="Ej. Suite Presidencial" required type="text">
+            <input id="nombre" v-model="formulario.nombre" placeholder="Ej. Tzintzuntzan" required type="text">
           </div>
           <div class="form-group">
-            <label for="precio">Precio por Noche (MXN)</label>
-            <input id="precio" v-model.number="formulario.precio" min="0" placeholder="Ej. 1500" required type="number">
+            <label for="tipo">Tipo de Habitación</label>
+            <input id="tipo" v-model="formulario.tipo" placeholder="Ej. Master Suite" required type="text">
+          </div>
+          <div class="form-group">
+            <label for="precioBase">Precio Base por Noche (MXN)</label>
+            <input id="precioBase" v-model.number="formulario.precioBase" min="0" placeholder="Ej. 2500" required type="number">
+          </div>
+          <div class="form-group">
+            <label for="capacidad">Capacidad (Personas)</label>
+            <input id="capacidad" v-model.number="formulario.capacidad" min="1" placeholder="Ej. 2" required type="number">
           </div>
         </div>
+
         <div class="form-group">
           <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" v-model="formulario.descripcion" placeholder="Describe las características de la habitación..."
-                    required rows="3"></textarea>
+          <textarea id="descripcion" v-model="formulario.descripcion" placeholder="Describe la habitación..." required rows="3"></textarea>
         </div>
+
         <div class="form-group">
-          <label for="foto">Ruta de la Imagen</label>
-          <input id="foto" v-model="formulario.foto" placeholder="img/habitacion.jpg" required type="text">
+          <label for="amenidades">Amenidades (Separadas por coma)</label>
+          <textarea id="amenidades" v-model="formulario.amenidadesInput" placeholder="Ej. 1 Cama King Size, Smart TV 55, Aire Acondicionado" required rows="2"></textarea>
         </div>
+
+        <div class="form-group">
+          <label for="foto">Ruta de la Imagen Principal</label>
+          <input id="foto" v-model="formulario.fotoInput" placeholder="/src/images/Habitacion.jpg" required type="text">
+        </div>
+
         <div class="form-actions">
-          <button v-if="modoEdicion" class="btn-secondary" type="button" @click="cancelarFormulario">
-            Cancelar
-          </button>
-          <button v-else class="btn-secondary" type="button" @click="limpiarFormulario">
-            Limpiar
-          </button>
+          <button v-if="modoEdicion" class="btn-secondary" type="button" @click="cancelarFormulario">Cancelar</button>
+          <button v-else class="btn-secondary" type="button" @click="limpiarFormulario">Limpiar</button>
           <button class="btn-primary" type="submit">
             {{ modoEdicion ? 'Guardar Cambios' : 'Registrar Habitación' }}
           </button>
@@ -47,7 +57,6 @@
       </form>
     </section>
 
-    <!-- LISTA: Lectura -->
     <section class="lista-container">
       <div class="lista-header">
         <h2>📋 Habitaciones Registradas</h2>
@@ -63,17 +72,20 @@
       <div v-else class="cards-grid">
         <div
             v-for="(hab, index) in habitaciones"
-            :key="index"
+            :key="hab.id"
             :class="{ 'card--editing': modoEdicion && indiceEdicion === index }"
             class="card"
         >
           <div class="card-img-wrapper">
-            <img :alt="hab.nombre" :src="hab.foto" class="card-img" @error="onImgError($event)">
+            <img :alt="hab.nombre" :src="hab.imagenes && hab.imagenes.length ? hab.imagenes[0] : 'img/avatar.webp'" class="card-img" @error="onImgError($event)">
           </div>
           <div class="card-body">
-            <h3 class="card-title">{{ hab.nombre }}</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 class="card-title">{{ hab.nombre }}</h3>
+              <small>{{ hab.tipo }} (Cap. {{ hab.capacidad }})</small>
+            </div>
             <p class="card-desc">{{ hab.descripcion }}</p>
-            <p class="card-price">${{ hab.precio?.toLocaleString('es-MX') }} <span>MXN / noche</span></p>
+            <p class="card-price">${{ hab.precioBase?.toLocaleString('es-MX') }} <span>MXN / noche</span></p>
           </div>
           <div class="card-actions">
             <button class="btn-edit" @click="iniciarEdicion(index)">✏️ Editar</button>
@@ -83,7 +95,6 @@
       </div>
     </section>
 
-    <!-- Modal de confirmación -->
     <div v-if="modalEliminar" class="modal-overlay" @click.self="modalEliminar = false">
       <div class="modal">
         <h3>¿Eliminar habitación?</h3>
@@ -95,7 +106,6 @@
       </div>
     </div>
 
-    <!-- Toast -->
     <transition name="toast">
       <div v-if="toast.visible" :class="`toast--${toast.tipo}`" class="toast">
         {{ toast.mensaje }}
@@ -105,8 +115,11 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref} from 'vue';
-import {RouterLink} from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
+import { RouterLink } from 'vue-router';
+
+// JSON
+import habitacionesJson from '@/Json/habitaciones.json'; // Ajusta la ruta si es necesario
 
 const STORAGE_KEY = 'catalogoHabitaciones';
 
@@ -116,47 +129,79 @@ const indiceEdicion = ref(null);
 const modalEliminar = ref(false);
 const indiceAEliminar = ref(null);
 
+// El formulario mapea campos temporales para facilitar la edición de arreglos
 const formulario = reactive({
+  id: '',
   nombre: '',
+  tipo: '',
   descripcion: '',
-  precio: null,
-  foto: 'img/avatar.webp',
+  precioBase: null,
+  capacidad: null,
+  amenidadesInput: '',
+  fotoInput: '',
+  disponible: true
 });
 
-const toast = reactive({visible: false, mensaje: '', tipo: 'success'});
+const toast = reactive({ visible: false, mensaje: '', tipo: 'success' });
 
 const cargarDatos = () => {
   const datos = localStorage.getItem(STORAGE_KEY);
-  habitaciones.value = datos ? JSON.parse(datos) : [];
+  if (datos && datos !== '[]') {
+    habitaciones.value = JSON.parse(datos);
+  } else {
+    habitaciones.value = [...habitacionesJson];
+    guardarDatos();
+  }
 };
 
 const guardarDatos = () => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(habitaciones.value));
 };
 
+const armarObjetoHabitacion = () => {
+  return {
+    id: formulario.id || Date.now().toString(),
+    nombre: formulario.nombre,
+    tipo: formulario.tipo,
+    descripcion: formulario.descripcion,
+    precioBase: formulario.precioBase,
+    capacidad: formulario.capacidad,
+    amenidades: formulario.amenidadesInput.split(',').map(item => item.trim()).filter(item => item !== ''),
+    imagenes: [formulario.fotoInput],
+    disponible: formulario.disponible
+  };
+};
+
 const procesarFormulario = () => {
+  const habitacionFinal = armarObjetoHabitacion();
+
   if (modoEdicion.value) {
-    habitaciones.value[indiceEdicion.value] = {...formulario};
+    habitaciones.value[indiceEdicion.value] = habitacionFinal;
     mostrarToast('Habitación actualizada correctamente.', 'success');
     cancelarFormulario();
   } else {
-    habitaciones.value.push({...formulario});
+    habitaciones.value.push(habitacionFinal);
     mostrarToast('Habitación registrada con éxito.', 'success');
     limpiarFormulario();
   }
   guardarDatos();
-
 };
 
 const iniciarEdicion = (index) => {
   const hab = habitaciones.value[index];
+  formulario.id = hab.id;
   formulario.nombre = hab.nombre;
+  formulario.tipo = hab.tipo;
   formulario.descripcion = hab.descripcion;
-  formulario.precio = hab.precio;
-  formulario.foto = hab.foto;
+  formulario.precioBase = hab.precioBase;
+  formulario.capacidad = hab.capacidad;
+  formulario.amenidadesInput = hab.amenidades ? hab.amenidades.join(', ') : '';
+  formulario.fotoInput = hab.imagenes && hab.imagenes.length ? hab.imagenes[0] : '';
+  formulario.disponible = hab.disponible;
+
   modoEdicion.value = true;
   indiceEdicion.value = index;
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const cancelarFormulario = () => {
@@ -166,10 +211,15 @@ const cancelarFormulario = () => {
 };
 
 const limpiarFormulario = () => {
+  formulario.id = '';
   formulario.nombre = '';
+  formulario.tipo = '';
   formulario.descripcion = '';
-  formulario.precio = null;
-  formulario.foto = 'img/avatar.webp';
+  formulario.precioBase = null;
+  formulario.capacidad = null;
+  formulario.amenidadesInput = '';
+  formulario.fotoInput = '';
+  formulario.disponible = true;
 };
 
 const confirmarEliminar = (index) => {
@@ -192,12 +242,11 @@ const mostrarToast = (mensaje, tipo = 'success') => {
 };
 
 const onImgError = (e) => {
-  e.target.src = 'img/avatar.webp';
+  e.target.src = '/src/images/hotel.webp';
 };
 
 onMounted(cargarDatos);
 </script>
 
 <style scoped>
-
 </style>
