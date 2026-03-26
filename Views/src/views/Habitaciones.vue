@@ -1,27 +1,37 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import habitacionesData from '../Json/habitaciones.json';
 
 const router = useRouter();
 const habitaciones = ref([]);
+const cargando = ref(true); // Agregamos un estado de carga para que se vea pro
+const errorConexion = ref(false);
+
+onMounted(async () => {
+  try {
+    const respuesta = await fetch('http://localhost:3000/api/habitaciones');
+
+    if (!respuesta.ok) {
+      throw new Error('Error al obtener los datos del servidor');
+    }
+
+    const datos = await respuesta.json();
 
 
-const STORAGE_KEY = 'catalogoHabitaciones';
+    habitaciones.value = datos.map(hab => ({
+      ...hab,
+      precioBase: parseFloat(hab.precio_base)
+    }));
 
-onMounted(() => {
-  const guardadas = localStorage.getItem(STORAGE_KEY);
-
-  if (guardadas && guardadas !== '[]') {
-    habitaciones.value = JSON.parse(guardadas);
-  } else {
-    // Si no hay datos, inicializamos con el JSON
-    habitaciones.value = [...habitacionesData];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(habitaciones.value));
+  } catch (error) {
+    console.error("Houston, tenemos un problema:", error);
+    errorConexion.value = true;
+  } finally {
+    cargando.value = false;
   }
 });
 
-//  Filtramos para mostrar al público SOLO las habitaciones disponibles
+// SOLO las habitaciones disponibles
 const habitacionesDisponibles = computed(() => {
   return habitaciones.value.filter(hab => hab.disponible === true);
 });
@@ -39,7 +49,17 @@ const prepararReserva = (idHabitacion) => {
 
   <main class="habitaciones-main">
     <h2 id="TituloHabitaciones">Nuestras Opciones de Descanso</h2>
-    <p style="text-align: center; color: #555; margin-bottom: 40px;">
+    <div v-if="cargando" style="text-align: center; padding: 40px; color: #A62679;">
+      <h3>Cargando habitaciones... ⏳</h3>
+    </div>
+
+    <div v-else-if="errorConexion" style="text-align: center; padding: 40px; color: red;">
+      <h3>Ups, no pudimos conectar con el servidor. 🔌</h3>
+      <p>Asegúrate de que el backend esté corriendo en el puerto 3000.</p>
+    </div>
+
+
+      <p style="text-align: center; color: #555; margin-bottom: 40px;">
       Encuentra el espacio perfecto para tu estadía. Diseñadas para tu máximo confort.
     </p>
 
