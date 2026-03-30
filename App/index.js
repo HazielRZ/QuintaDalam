@@ -109,6 +109,19 @@ app.post('/api/reservas', async (req, res) => {
     try {
         const { habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total } = req.body;
 
+        const checkQuery = `
+            SELECT id FROM reservas 
+            WHERE habitacion_id = $1 
+            AND fecha_entrada < $3 
+            AND fecha_salida > $2
+        `;
+
+        const checkResult = await pool.query(checkQuery, [habitacion_id, fecha_entrada, fecha_salida]);
+
+        if (checkResult.rows.length > 0) {
+            return res.status(400).json({ error: 'Lo sentimos, la habitación ya no está disponible para esas fechas. Por favor elige otras.' });
+        }
+
         const nuevaReserva = await pool.query(
             `INSERT INTO reservas 
             (habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total) 
@@ -119,7 +132,7 @@ app.post('/api/reservas', async (req, res) => {
         res.json({ mensaje: '¡Reserva confirmada con éxito!', reserva: nuevaReserva.rows[0] });
     } catch (err) {
         console.error('Error al guardar reserva:', err.message);
-        res.status(500).send('Error en el servidor al procesar la reserva');
+        res.status(500).json({ error: 'Error en el servidor al procesar la reserva' });
     }
 });
 // ==========================================
