@@ -9,7 +9,18 @@ const checkout = ref('')
 const huespedes = ref('2')
 
 const buscarDisponibilidad = () => {
-  router.push('/habitaciones')
+  if (new Date(checkout.value) <= new Date(checkin.value)) {
+    alert("La fecha de salida debe ser posterior a la de llegada.");
+    return;
+  }
+  router.push({
+    path: '/habitaciones',
+    query: {
+      llegada: checkin.value,
+      salida: checkout.value,
+      pax: huespedes.value
+    }
+  })
 }
 
 const secciones = [

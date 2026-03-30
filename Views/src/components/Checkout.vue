@@ -1,22 +1,39 @@
 <script setup>
-import {computed, onMounted, ref} from 'vue'
-import habitacionesData from '../Json/habitaciones.json'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const habitacionSeleccionada = ref(null)
 
-// 1. LÓGICA DE BÚSQUEDA DE LA HABITACIÓN
-onMounted(() => {
+// 1. CARGAR LA HABITACIÓN DESDE LA BASE DE DATOS
+onMounted(async () => {
   const idOculto = localStorage.getItem('habitacionSeleccionada')
-  if (idOculto) {
-    habitacionSeleccionada.value = habitacionesData.find(h => h.id === idOculto)
-  }
-  if (!habitacionSeleccionada.value) {
-    habitacionSeleccionada.value = habitacionesData[0]
+
+  try {
+    const respuesta = await fetch('http://localhost:3000/api/habitaciones');
+    const datos = await respuesta.json();
+
+    // Convertimos los precios a número para Vue
+    const habitacionesBD = datos.map(hab => ({
+      ...hab,
+      precioBase: parseFloat(hab.precio_base)
+    }));
+
+    if (idOculto) {
+      habitacionSeleccionada.value = habitacionesBD.find(h => h.id === idOculto)
+    }
+
+    // Si por algo no encuentra el ID, selecciona la primera disponible
+    if (!habitacionSeleccionada.value && habitacionesBD.length > 0) {
+      habitacionSeleccionada.value = habitacionesBD[0]
+    }
+  } catch (error) {
+    console.error("Error al cargar la habitación:", error)
   }
 })
 
 // 2. VARIABLES DEL FORMULARIO DEL CLIENTE
-const datos = ref({
+const datosCliente = ref({
   nombre: '',
   apellidos: '',
   email: '',
@@ -25,7 +42,6 @@ const datos = ref({
 })
 
 // 3. LÓGICA DE FECHAS
-// Función para dar formato "YYYY-MM-DD" para los <input type="date">
 const formatoInput = (fecha) => {
   const year = fecha.getFullYear()
   const month = String(fecha.getMonth() + 1).padStart(2, '0')
@@ -37,11 +53,9 @@ const hoy = new Date()
 const manana = new Date()
 manana.setDate(hoy.getDate() + 1)
 
-// Variables reactivas para las fechas
 const fechaEntrada = ref(formatoInput(hoy))
 const fechaSalida = ref(formatoInput(manana))
 
-//  ajustar la salida automáticamente
 const validarFechas = () => {
   const entrada = new Date(fechaEntrada.value + 'T00:00:00')
   const salida = new Date(fechaSalida.value + 'T00:00:00')
@@ -53,15 +67,13 @@ const validarFechas = () => {
   }
 }
 
-//  días de diferencia
 const noches = computed(() => {
   const entrada = new Date(fechaEntrada.value + 'T00:00:00')
   const salida = new Date(fechaSalida.value + 'T00:00:00')
   const diferenciaTiempo = salida.getTime() - entrada.getTime()
   const dias = Math.ceil(diferenciaTiempo / (1000 * 3600 * 24))
-  return dias > 0 ? dias : 1 // Mínimo 1 noche
+  return dias > 0 ? dias : 1
 })
-
 
 const formatoElegante = (fechaString) => {
   const fecha = new Date(fechaString + 'T00:00:00')
@@ -75,8 +87,7 @@ const porcentajeDescuento = ref(0.05)
 
 const precioPorNoche = computed(() => {
   if (!habitacionSeleccionada.value) return 0
-  const precioLimpio = String(habitacionSeleccionada.value.precioBase).replace(/,/g, '')
-  return parseFloat(precioLimpio)
+  return habitacionSeleccionada.value.precioBase
 })
 
 const subtotal = computed(() => noches.value * precioPorNoche.value)
@@ -84,11 +95,47 @@ const descuento = computed(() => subtotal.value * porcentajeDescuento.value)
 const total = computed(() => subtotal.value - descuento.value)
 
 const formatoMoneda = (valor) => {
-  return new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(valor)
+  return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(valor)
 }
 
-const procesarPago = () => {
-  alert(`¡Procesando reserva a nombre de ${datos.value.nombre} por ${noches.value} noches. Total: ${formatoMoneda(total.value)}!`)
+// 5. PROCESAR EL PAGO (ENVIAR AL BACKEND)
+const procesando = ref(false)
+
+const procesarPago = async () => {
+  procesando.value = true;
+
+  const payloadReserva = {
+    habitacion_id: habitacionSeleccionada.value.id,
+    nombre_cliente: datosCliente.value.nombre,
+    apellidos: datosCliente.value.apellidos,
+    email: datosCliente.value.email,
+    telefono: datosCliente.value.telefono,
+    fecha_entrada: fechaEntrada.value,
+    fecha_salida: fechaSalida.value,
+    total: total.value
+  };
+
+  try {
+    const respuesta = await fetch('http://localhost:3000/api/reservas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payloadReserva)
+    });
+
+    if (respuesta.ok) {
+      alert(`¡Gracias ${datosCliente.value.nombre}! Tu reserva ha sido confirmada.`);
+      // Limpiamos el carrito y mandamos al home
+      localStorage.removeItem('habitacionSeleccionada');
+      router.push('/');
+    } else {
+      alert('Hubo un problema al procesar tu reserva. Intenta nuevamente.');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('Error de conexión al procesar el pago.');
+  } finally {
+    procesando.value = false;
+  }
 }
 </script>
 
@@ -116,26 +163,26 @@ const procesarPago = () => {
         <h4 style="margin-bottom: 10px; color: var(--magenta-deep);">Tus Datos</h4>
         <div class="form-group">
           <label for="nombre">Nombre(s)</label>
-          <input id="nombre" v-model="datos.nombre" placeholder="Ej. Juan" required type="text">
+          <input id="nombre" v-model="datosCliente.nombre" placeholder="Ej. Juan" required type="text">
         </div>
 
         <div class="form-group">
           <label for="apellidos">Apellidos</label>
-          <input id="apellidos" v-model="datos.apellidos" placeholder="Ej. Pérez" required type="text">
+          <input id="apellidos" v-model="datosCliente.apellidos" placeholder="Ej. Pérez" required type="text">
         </div>
 
         <div class="form-group">
           <label for="email">Correo Electrónico</label>
-          <input id="email" v-model="datos.email" placeholder="correo@ejemplo.com" required type="email">
+          <input id="email" v-model="datosCliente.email" placeholder="correo@ejemplo.com" required type="email">
         </div>
 
         <div class="form-group">
           <label for="telefono">Teléfono</label>
-          <input id="telefono" v-model="datos.telefono" placeholder="10 dígitos" required type="tel">
+          <input id="telefono" v-model="datosCliente.telefono" placeholder="10 dígitos" required type="tel">
         </div>
 
         <div class="form-checkbox" style="margin: 20px 0;">
-          <input id="terminos" v-model="datos.aceptaTerminos" required type="checkbox">
+          <input id="terminos" v-model="datosCliente.aceptaTerminos" required type="checkbox">
           <label for="terminos" style="margin-left: 10px;">Acepto los términos y políticas del Hotel Quinta
             Dalam.</label>
         </div>
@@ -182,13 +229,6 @@ const procesarPago = () => {
 
 <style scoped>
 /* Encabezado */
-.checkout-header {
-  background: #082B59;
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-  margin-bottom: 30px;
-}
 .checkout-header h1 {
   font-family: 'Bodoni Moda SC', serif;
   margin: 0;
@@ -206,43 +246,11 @@ const procesarPago = () => {
 }
 
 /* Columna Izquierda (Formulario) */
-.checkout-form-section {
-  flex: 1.8;
-}
-
-.form-card {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  border: 1px solid #eaeaea;
-}
 
 .form-card h2 {
   color: #082B59;
   margin-top: 0;
   margin-bottom: 5px;
-}
-
-.subtitle {
-  color: #666;
-  margin-bottom: 30px;
-  font-size: 0.95rem;
-}
-
-.section-title {
-  color: #A62679;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 8px;
-}
-
-.fechas-group, .datos-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 25px;
 }
 
 .form-group label {
@@ -252,13 +260,13 @@ const procesarPago = () => {
   color: #333;
   margin-bottom: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
 .form-group input {
   width: 100%;
   padding: 12px 15px;
-  border: 1.5px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;

@@ -7,8 +7,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middlewares
-app.use(cors()); // Permite peticiones de tu frontend en Vue
-app.use(express.json()); // Permite recibir JSON en el body
+app.use(cors()); // Permite peticiones en Vue
+app.use(express.json()); // Permite recibir JSON
 
 // Configuración de la Base de Datos
 const pool = new Pool({
@@ -79,6 +79,58 @@ app.delete('/api/habitaciones/:id', async (req, res) => {
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error al eliminar la habitación');
+    }
+});
+
+// Crear una nueva reserva
+app.post('/api/reservas', async (req, res) => {
+    try {
+        const { habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total } = req.body;
+
+        const nuevaReserva = await pool.query(
+            `INSERT INTO reservas 
+            (habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            [habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total]
+        );
+
+        res.json({ mensaje: '¡Reserva confirmada con éxito!', reserva: nuevaReserva.rows[0] });
+    } catch (err) {
+        console.error('Error al guardar reserva:', err.message);
+        res.status(500).send('Error en el servidor al procesar la reserva');
+    }
+});
+// ==========================================
+// BUSCADOR DE DISPONIBILIDAD
+// ==========================================
+app.get('/api/disponibilidad', async (req, res) => {
+    try {
+        const { llegada, salida, pax } = req.query;
+
+        // Si no mandan fechas, regresamos todas las disponibles
+        if (!llegada || !salida) {
+            const result = await pool.query('SELECT * FROM habitaciones WHERE disponible = true');
+            return res.json(result.rows);
+        }
+
+        const query = `
+            SELECT * FROM habitaciones 
+            WHERE disponible = true 
+            AND capacidad >= $1
+            AND id NOT IN (
+                SELECT habitacion_id FROM reservas 
+                WHERE (fecha_entrada < $3 AND fecha_salida > $2)
+            )
+        `;
+
+        const capacidadBuscada = pax === '4' ? 2 : parseInt(pax);
+
+        const result = await pool.query(query, [capacidadBuscada, llegada, salida]);
+        res.json(result.rows);
+
+    } catch (err) {
+        console.error("Error en buscador:", err.message);
+        res.status(500).send('Error al buscar disponibilidad');
     }
 });
 

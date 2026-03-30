@@ -1,30 +1,36 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router'; // Importamos useRoute
 
 const router = useRouter();
+const route = useRoute();
 const habitaciones = ref([]);
-const cargando = ref(true); // Agregamos un estado de carga para que se vea pro
+const cargando = ref(true);
 const errorConexion = ref(false);
 
 onMounted(async () => {
   try {
-    const respuesta = await fetch('http://localhost:3000/api/habitaciones');
 
-    if (!respuesta.ok) {
-      throw new Error('Error al obtener los datos del servidor');
+    const { llegada, salida, pax } = route.query;
+
+    let url = 'http://localhost:3000/api/habitaciones';
+
+    if (llegada && salida) {
+      url = `http://localhost:3000/api/disponibilidad?llegada=${llegada}&salida=${salida}&pax=${pax}`;
     }
 
+    const respuesta = await fetch(url);
+
+    if (!respuesta.ok) throw new Error('Error al obtener datos');
+
     const datos = await respuesta.json();
-
-
     habitaciones.value = datos.map(hab => ({
       ...hab,
       precioBase: parseFloat(hab.precio_base)
     }));
 
   } catch (error) {
-    console.error("Houston, tenemos un problema:", error);
+    console.error(error);
     errorConexion.value = true;
   } finally {
     cargando.value = false;

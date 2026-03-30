@@ -8,9 +8,6 @@
         <router-link to="/habitaciones">Habitaciones</router-link>
       </li>
       <li>
-        <router-link to="/reservar">Reservar</router-link>
-      </li>
-      <li>
         <router-link to="/contacto">Contacto</router-link>
       </li>
       <li>
