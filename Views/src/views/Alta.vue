@@ -77,7 +77,7 @@
             class="card"
         >
           <div class="card-img-wrapper">
-            <img :alt="hab.nombre" :src="hab.imagenes && hab.imagenes.length ? hab.imagenes[0] : 'img/avatar.webp'" class="card-img" @error="onImgError($event)">
+            <img :alt="hab.nombre" :src="hab.imagenes && hab.imagenes.length ? hab.imagenes[0] : '/src/images/hotel.webp'" class="card-img" @error="onImgError($event)">
           </div>
           <div class="card-body">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -116,12 +116,9 @@
 
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router'; // Lo volvemos a importar para evitar que WebStorm o Vue se quejen
 
-// JSON
-import habitacionesJson from '@/Json/habitaciones.json'; // Ajusta la ruta si es necesario
-
-const STORAGE_KEY = 'catalogoHabitaciones';
+const API_URL = 'http://localhost:3000/api/habitaciones';
 
 const habitaciones = ref([]);
 const modoEdicion = ref(false);
@@ -129,7 +126,6 @@ const indiceEdicion = ref(null);
 const modalEliminar = ref(false);
 const indiceAEliminar = ref(null);
 
-// El formulario mapea campos temporales para facilitar la edición de arreglos
 const formulario = reactive({
   id: '',
   nombre: '',
@@ -144,49 +140,71 @@ const formulario = reactive({
 
 const toast = reactive({ visible: false, mensaje: '', tipo: 'success' });
 
-const cargarDatos = () => {
-  const datos = localStorage.getItem(STORAGE_KEY);
-  if (datos && datos !== '[]') {
-    habitaciones.value = JSON.parse(datos);
-  } else {
-    habitaciones.value = [...habitacionesJson];
-    guardarDatos();
+// 1. LEER (GET)
+const cargarDatos = async () => {
+  try {
+    const respuesta = await fetch(API_URL);
+    const datos = await respuesta.json();
+    habitaciones.value = datos.map(hab => ({
+      ...hab,
+      precioBase: parseFloat(hab.precio_base)
+    }));
+  } catch (error) {
+    mostrarToast('Error al conectar con la base de datos.', 'error');
   }
 };
 
-const guardarDatos = () => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(habitaciones.value));
-};
-
-const armarObjetoHabitacion = () => {
-  return {
-    id: formulario.id || Date.now().toString(),
+// 2. CREAR O EDITAR (POST / PUT)
+const procesarFormulario = async () => {
+  const habitacionFinal = {
     nombre: formulario.nombre,
     tipo: formulario.tipo,
     descripcion: formulario.descripcion,
-    precioBase: formulario.precioBase,
+    precio_base: formulario.precioBase,
     capacidad: formulario.capacidad,
     amenidades: formulario.amenidadesInput.split(',').map(item => item.trim()).filter(item => item !== ''),
     imagenes: [formulario.fotoInput],
     disponible: formulario.disponible
   };
-};
 
-const procesarFormulario = () => {
-  const habitacionFinal = armarObjetoHabitacion();
-
-  if (modoEdicion.value) {
-    habitaciones.value[indiceEdicion.value] = habitacionFinal;
-    mostrarToast('Habitación actualizada correctamente.', 'success');
+  try {
+    if (modoEdicion.value) {
+      await fetch(`${API_URL}/${formulario.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(habitacionFinal)
+      });
+      mostrarToast('Habitación actualizada correctamente.', 'success');
+    } else {
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(habitacionFinal)
+      });
+      mostrarToast('Habitación registrada con éxito.', 'success');
+    }
     cancelarFormulario();
-  } else {
-    habitaciones.value.push(habitacionFinal);
-    mostrarToast('Habitación registrada con éxito.', 'success');
-    limpiarFormulario();
+    cargarDatos();
+  } catch (error) {
+    mostrarToast('Ocurrió un error al guardar.', 'error');
   }
-  guardarDatos();
 };
 
+// 3. ELIMINAR (DELETE)
+const eliminarHabitacion = async () => {
+  const idHabitacion = habitaciones.value[indiceAEliminar.value].id;
+
+  try {
+    await fetch(`${API_URL}/${idHabitacion}`, { method: 'DELETE' });
+    mostrarToast('Habitación eliminada.', 'error');
+    modalEliminar.value = false;
+    cargarDatos();
+  } catch (error) {
+    mostrarToast('No se pudo eliminar la habitación.', 'error');
+  }
+};
+
+// LÓGICA DE INTERFAZ
 const iniciarEdicion = (index) => {
   const hab = habitaciones.value[index];
   formulario.id = hab.id;
@@ -227,13 +245,6 @@ const confirmarEliminar = (index) => {
   modalEliminar.value = true;
 };
 
-const eliminarHabitacion = () => {
-  habitaciones.value.splice(indiceAEliminar.value, 1);
-  guardarDatos();
-  modalEliminar.value = false;
-  mostrarToast('Habitación eliminada.', 'error');
-};
-
 const mostrarToast = (mensaje, tipo = 'success') => {
   toast.mensaje = mensaje;
   toast.tipo = tipo;
@@ -249,4 +260,5 @@ onMounted(cargarDatos);
 </script>
 
 <style scoped>
+
 </style>

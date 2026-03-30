@@ -50,6 +50,37 @@ app.post('/api/habitaciones', async (req, res) => {
         res.status(500).send('Error en el servidor al guardar la habitación');
     }
 });
+// 3. ACTUALIZAR (Editar) una habitación existente
+app.put('/api/habitaciones/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible } = req.body;
+
+        const result = await pool.query(
+            `UPDATE habitaciones 
+             SET nombre = $1, tipo = $2, descripcion = $3, precio_base = $4, capacidad = $5, amenidades = $6, imagenes = $7, disponible = $8 
+             WHERE id = $9 RETURNING *`,
+            [nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible, id]
+        );
+
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error al actualizar la habitación');
+    }
+});
+
+// 4. ELIMINAR una habitación
+app.delete('/api/habitaciones/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query('DELETE FROM habitaciones WHERE id = $1', [id]);
+        res.json({ mensaje: 'Habitación eliminada con éxito' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error al eliminar la habitación');
+    }
+});
 
 // Iniciar el servidor
 app.listen(port, () => {
