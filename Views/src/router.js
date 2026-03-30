@@ -34,10 +34,15 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: '/admin', // 👈 La ruta del Lobby
+        path: '/admin',
         name: 'admin-lobby',
         component: () => import('./views/AdminLobby.vue'),
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/ticket',
+        name: 'ticket',
+        component: () => import('./views/Ticket.vue')
     },
 ]
 

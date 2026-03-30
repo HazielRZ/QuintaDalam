@@ -247,11 +247,21 @@ const procesarPago = async () => {
       });
 
       const data = await respuesta.json();
-
       if (respuesta.ok) {
+        const ticketData = {
+          folio: data.reserva.id,
+          cliente: `${datosCliente.value.nombre} ${datosCliente.value.apellidos}`,
+          habitacion: habitacionSeleccionada.value.nombre,
+          llegada: fechaEntrada.value,
+          salida: fechaSalida.value,
+          total: total.value,
+          metodo: metodoPago.value,
+          fechaCompra: new Date().toISOString()
+        };
+        localStorage.setItem('ticket_dalam', JSON.stringify(ticketData));
         localStorage.removeItem('habitacionSeleccionada');
-        alert('¡Reserva confirmada con éxito!');
-        router.push('/');
+
+        router.push('/ticket');
       } else {
         alert(data.error || 'Hubo un problema al procesar tu reserva.');
       }
