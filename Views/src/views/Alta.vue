@@ -2,7 +2,7 @@
   <div class="alta-view">
     <header class="page-header">
       <nav>
-        <RouterLink class="btn-back" to="/habitaciones">← Regresar a Habitaciones</RouterLink>
+        <RouterLink class="btn-back" to="/admin">← Volver al Panel</RouterLink>
       </nav>
       <div class="header-content">
         <h1>Gestión de Habitaciones</h1>
@@ -153,7 +153,6 @@ const cargarDatos = async () => {
     mostrarToast('Error al conectar con la base de datos.', 'error');
   }
 };
-
 // 2. CREAR O EDITAR (POST / PUT)
 const procesarFormulario = async () => {
   const habitacionFinal = {
@@ -167,18 +166,27 @@ const procesarFormulario = async () => {
     disponible: formulario.disponible
   };
 
+  // 🔑 Recuperamos el token de seguridad del administrador
+  const token = localStorage.getItem('token_dalam');
+
   try {
     if (modoEdicion.value) {
       await fetch(`${API_URL}/${formulario.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // 🛡️ Pase VIP para editar
+        },
         body: JSON.stringify(habitacionFinal)
       });
       mostrarToast('Habitación actualizada correctamente.', 'success');
     } else {
       await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // 🛡️ Pase VIP para crear
+        },
         body: JSON.stringify(habitacionFinal)
       });
       mostrarToast('Habitación registrada con éxito.', 'success');
@@ -194,8 +202,15 @@ const procesarFormulario = async () => {
 const eliminarHabitacion = async () => {
   const idHabitacion = habitaciones.value[indiceAEliminar.value].id;
 
+  const token = localStorage.getItem('token_dalam');
+
   try {
-    await fetch(`${API_URL}/${idHabitacion}`, { method: 'DELETE' });
+    await fetch(`${API_URL}/${idHabitacion}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     mostrarToast('Habitación eliminada.', 'error');
     modalEliminar.value = false;
     cargarDatos();

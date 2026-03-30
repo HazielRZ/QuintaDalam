@@ -2,7 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
-
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'qu1nta_d4laM_2o26';
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -18,6 +20,26 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
 });
+const verificarToken = (req, res, next) => {
+    // 1. Busca el token
+    const authHeader = req.headers['authorization'];
+
+    if (!authHeader) {
+        return res.status(403).json({ error: 'Acceso denegado: No enviaste un token' });
+    }
+
+    // 2. Extrae el token
+    const token = authHeader.split(' ')[1];
+
+    // 3. Verifica que sea un token válido
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ error: 'Token inválido o expirado' });
+        }
+        req.admin = decoded;
+        next();
+    });
+};
 
 // ==========================================
 // RUTAS DE LA API (Endpoints)
@@ -34,7 +56,7 @@ app.get('/api/habitaciones', async (req, res) => {
 });
 
 // 2. Crear una NUEVA habitación
-app.post('/api/habitaciones', async (req, res) => {
+app.post('/api/habitaciones',verificarToken, async (req, res) => {
     try {
         const { nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible } = req.body;
 
@@ -51,7 +73,7 @@ app.post('/api/habitaciones', async (req, res) => {
     }
 });
 // 3. ACTUALIZAR (Editar) una habitación existente
-app.put('/api/habitaciones/:id', async (req, res) => {
+app.put('/api/habitaciones/:id',verificarToken, async (req, res) => {
     try {
         const { id } = req.params;
         const { nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible } = req.body;
@@ -71,7 +93,7 @@ app.put('/api/habitaciones/:id', async (req, res) => {
 });
 
 // 4. ELIMINAR una habitación
-app.delete('/api/habitaciones/:id', async (req, res) => {
+app.delete('/api/habitaciones/:id',verificarToken, async (req, res) => {
     try {
         const { id } = req.params;
         await pool.query('DELETE FROM habitaciones WHERE id = $1', [id]);
@@ -133,6 +155,55 @@ app.get('/api/disponibilidad', async (req, res) => {
         res.status(500).send('Error al buscar disponibilidad');
     }
 });
+// ==========================================
+// SEGURIDAD Y LOGIN
+// ==========================================
+
+
+
+//  RUTA DE LOGIN
+app.post('/api/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const result = await pool.query('SELECT * FROM administradores WHERE email = $1', [email]);
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
+        }
+
+        const admin = result.rows[0];
+
+        const passwordValida = await bcrypt.compare(password, admin.password);
+        if (!passwordValida) {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
+        }
+
+        const token = jwt.sign({ id: admin.id, email: admin.email }, JWT_SECRET, { expiresIn: '2h' });
+
+        res.json({ mensaje: 'Login exitoso', token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error en el servidor');
+    }
+});
+
+// Obtener las reservas
+app.get('/api/reservas', verificarToken, async (req, res) => {
+    try {
+        const query = `
+            SELECT r.*, h.nombre as habitacion_nombre, h.tipo as habitacion_tipo
+            FROM reservas r
+            JOIN habitaciones h ON r.habitacion_id = h.id
+            ORDER BY r.fecha_creacion DESC
+        `;
+        const result = await pool.query(query);
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Error al obtener las reservas:', err.message);
+        res.status(500).send('Error en el servidor al cargar reservas');
+    }
+});
+
 
 // Iniciar el servidor
 app.listen(port, () => {

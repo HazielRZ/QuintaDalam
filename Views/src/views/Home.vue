@@ -85,7 +85,7 @@ const secciones = [
             <option value="1">1 habitación, 1 persona</option>
             <option value="2">1 habitación, 2 personas</option>
             <option value="3">1 habitación, 3 personas</option>
-            <option value="4">2 habitaciones, 4 personas</option>
+            <option value="4">1 habitacion, 4 personas</option>
           </select>
         </div>
         <div class="input-group">

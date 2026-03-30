@@ -1,6 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
-import Alta from './views/Alta.vue'
 import Home from './views/Home.vue'
 import Habitaciones from './views/Habitaciones.vue'
 import Contacto from './views/Contacto.vue'
@@ -14,11 +13,32 @@ const routes = [
     {path: '/contacto', component: Contacto},
     {path: '/conocenos', component: Conocenos},
     {path: '/galeria', component: Galeria},
-    {path: '/alta', component: Alta},
+    {  path: '/login',
+    name: 'login',
+    component: () => import('./views/Login.vue')
+},
+{
+    path: '/alta',
+        name: 'alta',
+    component: () => import('./views/Alta.vue'),
+    meta: { requiresAuth: true }
+},
     {
         path: '/reservar/', name: 'reservar', component: () => import('./components/Checkout.vue')
     },
     {path: '/manejos', component: ManejoHabitaciones},
+    {
+        path: '/admin/reservas',
+        name: 'admin-reservas',
+        component: () => import('./views/AdminReservas.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/admin', // 👈 La ruta del Lobby
+        name: 'admin-lobby',
+        component: () => import('./views/AdminLobby.vue'),
+        meta: { requiresAuth: true }
+    },
 ]
 
 const router = createRouter({
@@ -26,5 +46,18 @@ const router = createRouter({
     routes
 })
 
-export default router
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('token_dalam');
 
+    if (to.meta.requiresAuth && !token) {
+        next('/login');
+    }
+    else if (to.path === '/login' && token) {
+        next('/admin');
+    }
+    else {
+        next();
+    }
+})
+
+export default router
