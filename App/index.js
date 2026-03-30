@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg');
+const {Pool} = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'qu1nta_d4laM_2o26';
@@ -25,7 +25,7 @@ const verificarToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
 
     if (!authHeader) {
-        return res.status(403).json({ error: 'Acceso denegado: No enviaste un token' });
+        return res.status(403).json({error: 'Acceso denegado: No enviaste un token'});
     }
 
     // 2. Extrae el token
@@ -34,7 +34,7 @@ const verificarToken = (req, res, next) => {
     // 3. Verifica que sea un token válido
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
-            return res.status(401).json({ error: 'Token inválido o expirado' });
+            return res.status(401).json({error: 'Token inválido o expirado'});
         }
         req.admin = decoded;
         next();
@@ -56,9 +56,9 @@ app.get('/api/habitaciones', async (req, res) => {
 });
 
 // 2. Crear una NUEVA habitación
-app.post('/api/habitaciones',verificarToken, async (req, res) => {
+app.post('/api/habitaciones', verificarToken, async (req, res) => {
     try {
-        const { nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible } = req.body;
+        const {nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible} = req.body;
 
         const nuevaHabitacion = await pool.query(
             `INSERT INTO habitaciones (nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible) 
@@ -73,10 +73,10 @@ app.post('/api/habitaciones',verificarToken, async (req, res) => {
     }
 });
 // 3. ACTUALIZAR (Editar) una habitación existente
-app.put('/api/habitaciones/:id',verificarToken, async (req, res) => {
+app.put('/api/habitaciones/:id', verificarToken, async (req, res) => {
     try {
-        const { id } = req.params;
-        const { nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible } = req.body;
+        const {id} = req.params;
+        const {nombre, tipo, descripcion, precio_base, capacidad, amenidades, imagenes, disponible} = req.body;
 
         const result = await pool.query(
             `UPDATE habitaciones 
@@ -93,11 +93,11 @@ app.put('/api/habitaciones/:id',verificarToken, async (req, res) => {
 });
 
 // 4. ELIMINAR una habitación
-app.delete('/api/habitaciones/:id',verificarToken, async (req, res) => {
+app.delete('/api/habitaciones/:id', verificarToken, async (req, res) => {
     try {
-        const { id } = req.params;
+        const {id} = req.params;
         await pool.query('DELETE FROM habitaciones WHERE id = $1', [id]);
-        res.json({ mensaje: 'Habitación eliminada con éxito' });
+        res.json({mensaje: 'Habitación eliminada con éxito'});
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error al eliminar la habitación');
@@ -107,7 +107,16 @@ app.delete('/api/habitaciones/:id',verificarToken, async (req, res) => {
 // Crear una nueva reserva
 app.post('/api/reservas', async (req, res) => {
     try {
-        const { habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total } = req.body;
+        const {
+            habitacion_id,
+            nombre_cliente,
+            apellidos,
+            email,
+            telefono,
+            fecha_entrada,
+            fecha_salida,
+            total
+        } = req.body;
 
         const checkQuery = `
             SELECT id FROM reservas 
@@ -119,7 +128,7 @@ app.post('/api/reservas', async (req, res) => {
         const checkResult = await pool.query(checkQuery, [habitacion_id, fecha_entrada, fecha_salida]);
 
         if (checkResult.rows.length > 0) {
-            return res.status(400).json({ error: 'Lo sentimos, la habitación ya no está disponible para esas fechas. Por favor elige otras.' });
+            return res.status(400).json({error: 'Lo sentimos, la habitación ya no está disponible para esas fechas. Por favor elige otras.'});
         }
 
         const nuevaReserva = await pool.query(
@@ -129,10 +138,10 @@ app.post('/api/reservas', async (req, res) => {
             [habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total]
         );
 
-        res.json({ mensaje: '¡Reserva confirmada con éxito!', reserva: nuevaReserva.rows[0] });
+        res.json({mensaje: '¡Reserva confirmada con éxito!', reserva: nuevaReserva.rows[0]});
     } catch (err) {
         console.error('Error al guardar reserva:', err.message);
-        res.status(500).json({ error: 'Error en el servidor al procesar la reserva' });
+        res.status(500).json({error: 'Error en el servidor al procesar la reserva'});
     }
 });
 // ==========================================
@@ -140,7 +149,7 @@ app.post('/api/reservas', async (req, res) => {
 // ==========================================
 app.get('/api/disponibilidad', async (req, res) => {
     try {
-        const { llegada, salida, pax } = req.query;
+        const {llegada, salida, pax} = req.query;
 
         // Si no mandan fechas, regresamos todas las disponibles
         if (!llegada || !salida) {
@@ -173,27 +182,26 @@ app.get('/api/disponibilidad', async (req, res) => {
 // ==========================================
 
 
-
 //  RUTA DE LOGIN
 app.post('/api/login', async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const {email, password} = req.body;
 
         const result = await pool.query('SELECT * FROM administradores WHERE email = $1', [email]);
         if (result.rows.length === 0) {
-            return res.status(401).json({ error: 'Credenciales inválidas' });
+            return res.status(401).json({error: 'Credenciales inválidas'});
         }
 
         const admin = result.rows[0];
 
         const passwordValida = await bcrypt.compare(password, admin.password);
         if (!passwordValida) {
-            return res.status(401).json({ error: 'Credenciales inválidas' });
+            return res.status(401).json({error: 'Credenciales inválidas'});
         }
 
-        const token = jwt.sign({ id: admin.id, email: admin.email }, JWT_SECRET, { expiresIn: '2h' });
+        const token = jwt.sign({id: admin.id, email: admin.email}, JWT_SECRET, {expiresIn: '2h'});
 
-        res.json({ mensaje: 'Login exitoso', token });
+        res.json({mensaje: 'Login exitoso', token});
     } catch (error) {
         console.error(error);
         res.status(500).send('Error en el servidor');

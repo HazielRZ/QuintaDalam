@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router'; // Importamos useRoute
+import {computed, onMounted, ref} from 'vue';
+import {useRoute, useRouter} from 'vue-router'; // Importamos useRoute
 
 const router = useRouter();
 const route = useRoute();
@@ -11,7 +11,7 @@ const errorConexion = ref(false);
 onMounted(async () => {
   try {
 
-    const { llegada, salida, pax } = route.query;
+    const {llegada, salida, pax} = route.query;
 
     let url = 'http://localhost:3000/api/habitaciones';
 
@@ -65,7 +65,7 @@ const prepararReserva = (idHabitacion) => {
     </div>
 
 
-      <p style="text-align: center; color: #555; margin-bottom: 40px;">
+    <p style="text-align: center; color: #555; margin-bottom: 40px;">
       Encuentra el espacio perfecto para tu estadía. Diseñadas para tu máximo confort.
     </p>
 
@@ -99,7 +99,9 @@ const prepararReserva = (idHabitacion) => {
           </ul>
 
           <div class="room-action">
-            <span class="room-price">${{ habitacion.precioBase?.toLocaleString('es-MX') }} MXN <span>/ noche</span></span>
+            <span class="room-price">${{
+                habitacion.precioBase?.toLocaleString('es-MX')
+              }} MXN <span>/ noche</span></span>
             <button class="btn-check" @click="prepararReserva(habitacion.id)">
               Consultar
             </button>

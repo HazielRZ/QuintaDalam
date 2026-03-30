@@ -14,10 +14,10 @@
           <input
               id="email"
               v-model="email"
-              type="email"
+              :disabled="cargando"
               placeholder="admin@quintadalam.com"
               required
-              :disabled="cargando"
+              type="email"
           >
         </div>
 
@@ -26,10 +26,10 @@
           <input
               id="password"
               v-model="password"
-              type="password"
+              :disabled="cargando"
               placeholder="••••••••"
               required
-              :disabled="cargando"
+              type="password"
           >
         </div>
 
@@ -38,7 +38,7 @@
         </div>
 
         <div class="form-actions" style="margin-top: 1.5rem;">
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" :disabled="cargando">
+          <button :disabled="cargando" class="btn-primary" style="width: 100%; justify-content: center;" type="submit">
             {{ cargando ? 'Verificando...' : 'Iniciar Sesión' }}
           </button>
         </div>
@@ -52,8 +52,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import {ref} from 'vue';
+import {useRouter} from 'vue-router';
 
 const router = useRouter();
 
@@ -69,7 +69,7 @@ const procesarLogin = async () => {
   try {
     const respuesta = await fetch('http://localhost:3000/api/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         email: email.value,
         password: password.value
@@ -114,6 +114,7 @@ const procesarLogin = async () => {
   transition: all 0.3s;
   box-sizing: border-box;
 }
+
 .login-wrapper {
   min-height: 100vh;
   display: flex;

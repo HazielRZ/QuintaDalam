@@ -24,22 +24,26 @@
           </div>
           <div class="form-group">
             <label for="precioBase">Precio Base por Noche (MXN)</label>
-            <input id="precioBase" v-model.number="formulario.precioBase" min="0" placeholder="Ej. 2500" required type="number">
+            <input id="precioBase" v-model.number="formulario.precioBase" min="0" placeholder="Ej. 2500" required
+                   type="number">
           </div>
           <div class="form-group">
             <label for="capacidad">Capacidad (Personas)</label>
-            <input id="capacidad" v-model.number="formulario.capacidad" min="1" placeholder="Ej. 2" required type="number">
+            <input id="capacidad" v-model.number="formulario.capacidad" min="1" placeholder="Ej. 2" required
+                   type="number">
           </div>
         </div>
 
         <div class="form-group">
           <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" v-model="formulario.descripcion" placeholder="Describe la habitación..." required rows="3"></textarea>
+          <textarea id="descripcion" v-model="formulario.descripcion" placeholder="Describe la habitación..." required
+                    rows="3"></textarea>
         </div>
 
         <div class="form-group">
           <label for="amenidades">Amenidades (Separadas por coma)</label>
-          <textarea id="amenidades" v-model="formulario.amenidadesInput" placeholder="Ej. 1 Cama King Size, Smart TV 55, Aire Acondicionado" required rows="2"></textarea>
+          <textarea id="amenidades" v-model="formulario.amenidadesInput"
+                    placeholder="Ej. 1 Cama King Size, Smart TV 55, Aire Acondicionado" required rows="2"></textarea>
         </div>
 
         <div class="form-group">
@@ -77,7 +81,9 @@
             class="card"
         >
           <div class="card-img-wrapper">
-            <img :alt="hab.nombre" :src="hab.imagenes && hab.imagenes.length ? hab.imagenes[0] : '/src/images/hotel.webp'" class="card-img" @error="onImgError($event)">
+            <img :alt="hab.nombre"
+                 :src="hab.imagenes && hab.imagenes.length ? hab.imagenes[0] : '/src/images/hotel.webp'"
+                 class="card-img" @error="onImgError($event)">
           </div>
           <div class="card-body">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -115,8 +121,8 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
-import { RouterLink } from 'vue-router'; // Lo volvemos a importar para evitar que WebStorm o Vue se quejen
+import {onMounted, reactive, ref} from 'vue';
+import {RouterLink} from 'vue-router'; // Lo volvemos a importar para evitar que WebStorm o Vue se quejen
 
 const API_URL = 'http://localhost:3000/api/habitaciones';
 
@@ -138,7 +144,7 @@ const formulario = reactive({
   disponible: true
 });
 
-const toast = reactive({ visible: false, mensaje: '', tipo: 'success' });
+const toast = reactive({visible: false, mensaje: '', tipo: 'success'});
 
 // 1. LEER (GET)
 const cargarDatos = async () => {
@@ -234,7 +240,7 @@ const iniciarEdicion = (index) => {
 
   modoEdicion.value = true;
   indiceEdicion.value = index;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({top: 0, behavior: 'smooth'});
 };
 
 const cancelarFormulario = () => {

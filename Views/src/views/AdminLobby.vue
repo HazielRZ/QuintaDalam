@@ -6,7 +6,7 @@
         <h1 class="hero-title-admin">Centro de Mando</h1>
         <p class="hero-desc-admin">Bienvenido a la administración de Quinta Dalam</p>
       </div>
-      <button @click="cerrarSesion" class="btn-outline-danger">
+      <button class="btn-outline-danger" @click="cerrarSesion">
         <span style="margin-right: 5px;">🚪</span> Cerrar Sesión
       </button>
     </header>
@@ -17,9 +17,10 @@
           <span class="card-icon">🛏️</span>
         </div>
         <h3 class="card-title">Catálogo de Habitaciones</h3>
-        <p class="card-desc">Administra el inventario del hotel. Agrega nuevas habitaciones, edita detalles, ajusta capacidades y precios por noche.</p>
+        <p class="card-desc">Administra el inventario del hotel. Agrega nuevas habitaciones, edita detalles, ajusta
+          capacidades y precios por noche.</p>
         <div class="card-action">
-          <RouterLink to="/alta" class="btn-magenta">Gestionar Catálogo</RouterLink>
+          <RouterLink class="btn-magenta" to="/alta">Gestionar Catálogo</RouterLink>
         </div>
       </div>
 
@@ -28,9 +29,10 @@
           <span class="card-icon">📅</span>
         </div>
         <h3 class="card-title">Control de Reservas</h3>
-        <p class="card-desc">Visualiza el historial completo de compras. Consulta los datos de los huéspedes, fechas de llegada y montos pagados.</p>
+        <p class="card-desc">Visualiza el historial completo de compras. Consulta los datos de los huéspedes, fechas de
+          llegada y montos pagados.</p>
         <div class="card-action">
-          <RouterLink to="/admin/reservas" class="btn-magenta secondary">Ver Reservaciones</RouterLink>
+          <RouterLink class="btn-magenta secondary" to="/admin/reservas">Ver Reservaciones</RouterLink>
         </div>
       </div>
     </main>
@@ -38,7 +40,7 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import {useRouter} from 'vue-router';
 
 const router = useRouter();
 

@@ -13,16 +13,17 @@ const routes = [
     {path: '/contacto', component: Contacto},
     {path: '/conocenos', component: Conocenos},
     {path: '/galeria', component: Galeria},
-    {  path: '/login',
-    name: 'login',
-    component: () => import('./views/Login.vue')
-},
-{
-    path: '/alta',
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('./views/Login.vue')
+    },
+    {
+        path: '/alta',
         name: 'alta',
-    component: () => import('./views/Alta.vue'),
-    meta: { requiresAuth: true }
-},
+        component: () => import('./views/Alta.vue'),
+        meta: {requiresAuth: true}
+    },
     {
         path: '/reservar/', name: 'reservar', component: () => import('./components/Checkout.vue')
     },
@@ -31,13 +32,13 @@ const routes = [
         path: '/admin/reservas',
         name: 'admin-reservas',
         component: () => import('./views/AdminReservas.vue'),
-        meta: { requiresAuth: true }
+        meta: {requiresAuth: true}
     },
     {
         path: '/admin',
         name: 'admin-lobby',
         component: () => import('./views/AdminLobby.vue'),
-        meta: { requiresAuth: true }
+        meta: {requiresAuth: true}
     },
     {
         path: '/ticket',
@@ -56,11 +57,9 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.requiresAuth && !token) {
         next('/login');
-    }
-    else if (to.path === '/login' && token) {
+    } else if (to.path === '/login' && token) {
         next('/admin');
-    }
-    else {
+    } else {
         next();
     }
 })

@@ -1,8 +1,8 @@
 <template>
   <div class="ticket-wrapper">
     <div class="actions-nav">
-      <RouterLink to="/" class="btn-outline">← Volver al Inicio</RouterLink>
-      <button @click="descargarPDF" class="btn-primary">⬇️ Descargar PDF</button>
+      <RouterLink class="btn-outline" to="/">← Volver al Inicio</RouterLink>
+      <button class="btn-primary" @click="descargarPDF">⬇️ Descargar PDF</button>
     </div>
 
     <div ref="ticketPDF" class="ticket-card">
@@ -72,8 +72,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import {onMounted, ref} from 'vue';
+import {useRouter} from 'vue-router';
 import html2pdf from 'html2pdf.js'; // Importamos la magia
 
 const router = useRouter();
@@ -93,11 +93,11 @@ onMounted(() => {
 const formatearFecha = (fechaISO) => {
   const fecha = new Date(fechaISO);
   fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset());
-  return new Intl.DateTimeFormat('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }).format(fecha);
+  return new Intl.DateTimeFormat('es-MX', {day: '2-digit', month: 'short', year: 'numeric'}).format(fecha);
 };
 
 const formatearMoneda = (valor) => {
-  return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(valor);
+  return new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(valor);
 };
 
 const formatearMetodo = (metodo) => {
@@ -112,11 +112,11 @@ const formatearMetodo = (metodo) => {
 const descargarPDF = () => {
   const elemento = ticketPDF.value;
   const opciones = {
-    margin:       10,
-    filename:     `Reserva_QuintaDalam_${ticket.value.folio}.pdf`,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2 },
-    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    margin: 10,
+    filename: `Reserva_QuintaDalam_${ticket.value.folio}.pdf`,
+    image: {type: 'jpeg', quality: 0.98},
+    html2canvas: {scale: 2},
+    jsPDF: {unit: 'mm', format: 'a4', orientation: 'portrait'}
   };
 
   html2pdf().set(opciones).from(elemento).save();
@@ -159,7 +159,7 @@ const descargarPDF = () => {
 .ticket-card {
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   border: 1px solid #eaeaea;
   padding: 40px;
   color: #333;

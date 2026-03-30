@@ -72,8 +72,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import {onMounted, ref} from 'vue';
+import {useRouter} from 'vue-router';
 
 const router = useRouter();
 const reservas = ref([]);
@@ -83,7 +83,7 @@ const cargarReservas = async () => {
   const token = localStorage.getItem('token_dalam');
   try {
     const respuesta = await fetch('http://localhost:3000/api/reservas', {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: {'Authorization': `Bearer ${token}`}
     });
 
     if (respuesta.ok) {
@@ -104,11 +104,11 @@ const cargarReservas = async () => {
 const formatearFecha = (fechaISO) => {
   const fecha = new Date(fechaISO);
   fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset());
-  return new Intl.DateTimeFormat('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }).format(fecha);
+  return new Intl.DateTimeFormat('es-MX', {day: '2-digit', month: 'short', year: 'numeric'}).format(fecha);
 };
 
 const formatearMoneda = (valor) => {
-  return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(valor);
+  return new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(valor);
 };
 
 onMounted(cargarReservas);
