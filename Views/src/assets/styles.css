@@ -359,26 +359,27 @@ footer {
     font-weight: 600;
     margin-top: 5px;
 }
-
-.whatsapp {
-    background-color: #25D366;
+.icono {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.instagram {
-    background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+.icono svg {
+    width: 26px;
+    height: 26px;
+    fill: white;
 }
 
-.facebook {
-    background-color: #1877F2;
-}
-
-.telefono {
-    background-color: #34B7F1;
-}
-
-.correo {
-    background-color: #EA4335;
-}
+/* Tus colores originales — sin cambios */
+.whatsapp { background-color: #25D366; }
+.instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
+.facebook  { background-color: #1877F2; }
+.telefono  { background-color: #34B7F1; }
+.correo    { background-color: #EA4335; }
 
 .habitaciones-main {
     max-width: 1100px;

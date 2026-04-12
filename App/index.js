@@ -228,5 +228,5 @@ app.get('/api/reservas', verificarToken, async (req, res) => {
 
 // Iniciar el servidor
 app.listen(port, () => {
-    console.log(`🚀 Servidor de Quinta Dalam corriendo en http://localhost:${port}`);
+    console.log(` Servidor de Quinta Dalam corriendo en http://localhost:${port}`);
 });
