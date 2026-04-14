@@ -115,19 +115,7 @@ onMounted(cargarReservas);
 </script>
 
 <style scoped>
-.admin-reservas-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 60px 20px;
-}
 
-
-.lobby-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 40px;
-}
 
 .section-tag {
   display: inline-block;
@@ -139,18 +127,7 @@ onMounted(cargarReservas);
   margin-bottom: 10px;
 }
 
-.hero-title-admin {
-  font-family: 'Bodoni Moda SC', serif;
-  font-size: 2.2rem;
-  color: #f8e4f3;
-  margin: 0 0 5px 0;
-}
 
-.hero-desc-admin {
-  font-size: 0.95rem;
-  color: #555;
-  margin: 0;
-}
 
 .btn-outline {
   display: inline-block;

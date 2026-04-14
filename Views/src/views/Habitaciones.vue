@@ -92,7 +92,7 @@ const prepararReserva = (idHabitacion) => {
             {{ habitacion.tipo }}
           </p>
 
-          <p>{{ habitacion.descripcion }}</p>
+          <p class="room-desc">{{ habitacion.descripcion }}</p>
 
           <ul class="room-amenities">
             <li v-for="(amenidad, i) in habitacion.amenidades" :key="i">{{ amenidad }}</li>
@@ -131,5 +131,34 @@ const prepararReserva = (idHabitacion) => {
 </template>
 
 <style scoped>
-/* Tus estilos previos se mantienen intactos */
+.room-card {
+  display: flex;
+  align-items: stretch;
+}
+
+
+.room-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+
+.room-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0;
+}
+
+.room-action {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid #eaeaea;
+}
 </style>

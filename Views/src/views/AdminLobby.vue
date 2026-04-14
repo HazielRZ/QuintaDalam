@@ -51,21 +51,7 @@ const cerrarSesion = () => {
 </script>
 
 <style scoped>
-.admin-lobby {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 60px 20px;
-}
 
-
-.lobby-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 50px;
-  padding-bottom: 25px;
-  border-bottom: 1px solid #eaeaea;
-}
 
 .section-tag {
   display: inline-block;
@@ -77,18 +63,7 @@ const cerrarSesion = () => {
   margin-bottom: 10px;
 }
 
-.hero-title-admin {
-  font-family: 'Bodoni Moda SC', serif;
-  font-size: 2.5rem;
-  color: #f27272;
-  margin: 0 0 5px 0;
-}
 
-.hero-desc-admin {
-  font-size: 0.95rem;
-  color: #555;
-  margin: 0;
-}
 
 
 .btn-outline-danger {
