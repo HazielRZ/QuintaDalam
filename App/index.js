@@ -5,8 +5,23 @@ const {Pool} = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'qu1nta_d4laM_2o26';
+const helmet = require('helmet'); // helmet anti bots
 const app = express();
+app.use(helmet()); //
+app.use(express.json());
 const port = process.env.PORT || 3000;
+
+// Ciberseguridad rate limint
+const rateLimit = require('express-rate-limit');
+
+// limitador:
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutos
+    max: 5, // intentos por IP
+    message: { error: 'Demasiados intentos fallidos. Intenta de nuevo en 15 minutos.' }
+});
+
+
 
 // Middlewares
 app.use(cors()); // Permite peticiones en Vue
@@ -107,41 +122,41 @@ app.delete('/api/habitaciones/:id', verificarToken, async (req, res) => {
 // Crear una nueva reserva
 app.post('/api/reservas', async (req, res) => {
     try {
-        const {
-            habitacion_id,
-            nombre_cliente,
-            apellidos,
-            email,
-            telefono,
-            fecha_entrada,
-            fecha_salida,
-            total
-        } = req.body;
 
-        const checkQuery = `
-            SELECT id FROM reservas 
-            WHERE habitacion_id = $1 
-            AND fecha_entrada < $3 
-            AND fecha_salida > $2
-        `;
+        const { captchaToken, habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total } = req.body;
 
+        // 1. VALIDACIÓN CON GOOGLE
+        if (!captchaToken) {
+            return res.status(400).json({ error: 'Por favor, completa el CAPTCHA para continuar.' });
+        }
+
+        const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${captchaToken}`;
+        const googleResponse = await fetch(googleVerifyUrl, { method: 'POST' });
+        const googleData = await googleResponse.json();
+
+        if (!googleData.success) {
+            return res.status(400).json({ error: 'Fallo la verificación de seguridad de Google.' });
+        }
+
+        // 2. anti-overbooking
+        const checkQuery = `SELECT id FROM reservas WHERE habitacion_id = $1 AND fecha_entrada < $3 AND fecha_salida > $2`;
         const checkResult = await pool.query(checkQuery, [habitacion_id, fecha_entrada, fecha_salida]);
 
         if (checkResult.rows.length > 0) {
-            return res.status(400).json({error: 'Lo sentimos, la habitación ya no está disponible para esas fechas. Por favor elige otras.'});
+            return res.status(400).json({ error: 'Lo sentimos, la habitación ya no está disponible para esas fechas.' });
         }
 
+        // 3. GUARDA RESERVA
         const nuevaReserva = await pool.query(
-            `INSERT INTO reservas 
-            (habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            `INSERT INTO reservas (habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
             [habitacion_id, nombre_cliente, apellidos, email, telefono, fecha_entrada, fecha_salida, total]
         );
 
-        res.json({mensaje: '¡Reserva confirmada con éxito!', reserva: nuevaReserva.rows[0]});
+        res.json({ mensaje: '¡Reserva confirmada!', reserva: nuevaReserva.rows[0] });
     } catch (err) {
-        console.error('Error al guardar reserva:', err.message);
-        res.status(500).json({error: 'Error en el servidor al procesar la reserva'});
+        console.error(err);
+        res.status(500).json({ error: 'Error en el servidor al procesar la reserva' });
     }
 });
 // ==========================================
@@ -183,7 +198,8 @@ app.get('/api/disponibilidad', async (req, res) => {
 
 
 //  RUTA DE LOGIN
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', loginLimiter, async (req, res) => {
+
     try {
         const {email, password} = req.body;
 
@@ -224,6 +240,8 @@ app.get('/api/reservas', verificarToken, async (req, res) => {
         res.status(500).send('Error en el servidor al cargar reservas');
     }
 });
+
+
 
 
 // Iniciar el servidor

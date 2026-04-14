@@ -42,6 +42,18 @@
             {{ cargando ? 'Verificando...' : 'Iniciar Sesión' }}
           </button>
         </div>
+        <div class="form-group" style="background: #f4f7fb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+          <label style="color: #082B59; font-weight: bold; margin-bottom: 10px;">
+            🛡️ Verificación de Seguridad: ¿Cuánto es {{ captchaNum1 }} + {{ captchaNum2 }}?
+          </label>
+          <input
+              v-model="captchaInput"
+              type="number"
+              placeholder="Respuesta"
+              required
+              style="width: 100%; text-align: center; font-size: 1.2rem;"
+          >
+        </div>
       </form>
 
       <div style="text-align: center; margin-top: 2rem;">
@@ -52,8 +64,8 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
-import {useRouter} from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
@@ -62,8 +74,35 @@ const password = ref('');
 const mensajeError = ref('');
 const cargando = ref(false);
 
+// Variables del CAPTCHA
+const captchaNum1 = ref(0);
+const captchaNum2 = ref(0);
+const captchaInput = ref('');
+
+// Generar Captcha al iniciar
+onMounted(() => {
+  generarCaptcha();
+});
+
+const generarCaptcha = () => {
+  captchaNum1.value = Math.floor(Math.random() * 10) + 1;
+  captchaNum2.value = Math.floor(Math.random() * 10) + 1;
+  captchaInput.value = '';
+};
+
+// Función unificada
 const procesarLogin = async () => {
-  mensajeError.value = '';
+  mensajeError.value = ''; // Limpiamos errores anteriores
+
+  // 1. Validamos el CAPTCHA antes de tocar el servidor
+  if (parseInt(captchaInput.value) !== (captchaNum1.value + captchaNum2.value)) {
+    // Usamos mensajeError.value (no error.value)
+    mensajeError.value = "CAPTCHA incorrecto. ¿Eres un bot 🤖?";
+    generarCaptcha(); // Cambiamos los números si falla
+    return; // El return detiene el código aquí para que no haga la petición
+  }
+
+  // 2. Si el CAPTCHA está bien, continuamos con el Login normal
   cargando.value = true;
 
   try {
@@ -80,9 +119,10 @@ const procesarLogin = async () => {
 
     if (respuesta.ok) {
       localStorage.setItem('token_dalam', datos.token);
-      router.push('/admin');
+      await router.push('/admin');
     } else {
       mensajeError.value = datos.error || 'Credenciales inválidas';
+      generarCaptcha(); // Opcional: Generar nuevo captcha si falla la contraseña
     }
   } catch (error) {
     console.error(error);
@@ -107,7 +147,7 @@ const procesarLogin = async () => {
 .form-group input {
   width: 100%;
   padding: 12px 15px;
-  border: 1.5px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;

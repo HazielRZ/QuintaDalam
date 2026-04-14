@@ -1,179 +1,181 @@
 <template>
-  <header class="checkout-header">
-    <h1>Finaliza tu Reserva</h1>
-  </header>
+  <div class="checkout-wrapper">
+    <header class="checkout-header">
+      <h1>Finaliza tu Reserva</h1>
+    </header>
 
-  <main class="checkout-container">
-    <section class="checkout-form-section">
-      <div class="form-card">
+    <main class="checkout-container">
+      <section class="checkout-form-section">
+        <div class="form-card">
+          <form @submit.prevent="procesarPago">
 
-        <form @submit.prevent="procesarPago">
-
-          <div class="checkout-step">
-            <h4 class="step-title"><span class="step-number">1</span> Tus Fechas</h4>
-            <div class="fechas-group">
-              <div class="form-group">
-                <label for="entrada">Fecha de Llegada</label>
-                <input id="entrada" v-model="fechaEntrada" :min="formatoInput(hoy)" required type="date"
-                       @change="validarFechas">
-              </div>
-              <div class="form-group">
-                <label for="salida">Fecha de Salida</label>
-                <input id="salida" v-model="fechaSalida" :min="fechaEntrada" required type="date"
-                       @change="validarFechas">
-              </div>
-            </div>
-          </div>
-
-          <div class="checkout-step">
-            <h4 class="step-title"><span class="step-number">2</span> Datos del Huésped</h4>
-            <div class="datos-grid">
-              <div class="form-group">
-                <label for="nombre">Nombre(s)</label>
-                <input id="nombre" v-model="datosCliente.nombre" placeholder="Ej. Juan" required type="text">
-              </div>
-              <div class="form-group">
-                <label for="apellidos">Apellidos</label>
-                <input id="apellidos" v-model="datosCliente.apellidos" placeholder="Ej. Pérez" required type="text">
-              </div>
-              <div class="form-group">
-                <label for="email">Correo Electrónico</label>
-                <input id="email" v-model="datosCliente.email" placeholder="correo@ejemplo.com" required type="email">
-              </div>
-              <div class="form-group">
-                <label for="telefono">Teléfono</label>
-                <input id="telefono" v-model="datosCliente.telefono" placeholder="10 dígitos" required type="tel">
+            <div class="checkout-step">
+              <h4 class="step-title"><span class="step-number">1</span> Tus Fechas</h4>
+              <div class="fechas-group">
+                <div class="form-group">
+                  <label for="entrada">Fecha de Llegada</label>
+                  <input id="entrada" v-model="fechaEntrada" :min="formatoInput(hoy)" required type="date" @change="validarFechas">
+                </div>
+                <div class="form-group">
+                  <label for="salida">Fecha de Salida</label>
+                  <input id="salida" v-model="fechaSalida" :min="fechaEntrada" required type="date" @change="validarFechas">
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="checkout-step" style="border-bottom: none;">
-            <h4 class="step-title"><span class="step-number">3</span> Método de Pago</h4>
+            <div class="checkout-step">
+              <h4 class="step-title"><span class="step-number">2</span> Datos del Huésped</h4>
+              <div class="datos-grid">
+                <div class="form-group">
+                  <label for="nombre">Nombre(s)</label>
+                  <input id="nombre" v-model="datosCliente.nombre" placeholder="Ej. Juan" required type="text">
+                </div>
+                <div class="form-group">
+                  <label for="apellidos">Apellidos</label>
+                  <input id="apellidos" v-model="datosCliente.apellidos" placeholder="Ej. Pérez" required type="text">
+                </div>
+                <div class="form-group">
+                  <label for="email">Correo Electrónico</label>
+                  <input id="email" v-model="datosCliente.email" placeholder="correo@ejemplo.com" required type="email">
+                </div>
+                <div class="form-group">
+                  <label for="telefono">Teléfono</label>
+                  <input id="telefono" v-model="datosCliente.telefono" placeholder="10 dígitos" required type="tel">
+                </div>
+              </div>
+            </div>
 
-            <div class="payment-methods">
-              <label :class="{ active: metodoPago === 'tarjeta' }" class="payment-option">
-                <input v-model="metodoPago" name="pago" type="radio" value="tarjeta">
-                <div class="payment-info">
+            <div class="checkout-step" style="border-bottom: none;">
+              <h4 class="step-title"><span class="step-number">3</span> Método de Pago</h4>
+
+              <div class="payment-methods">
+                <label :class="{ active: metodoPago === 'tarjeta' }" class="payment-option">
+                  <input v-model="metodoPago" name="pago" type="radio" value="tarjeta">
+                  <span class="payment-info">
                   <span class="payment-name">💳 Tarjeta de Crédito / Débito</span>
                   <span class="payment-desc">Paga seguro ahora mismo.</span>
-                </div>
-              </label>
+                </span>
+                </label>
 
-              <label :class="{ active: metodoPago === 'mercadopago' }" class="payment-option">
-                <input v-model="metodoPago" name="pago" type="radio" value="mercadopago">
-                <div class="payment-info">
+                <label :class="{ active: metodoPago === 'mercadopago' }" class="payment-option">
+                  <input v-model="metodoPago" name="pago" type="radio" value="mercadopago">
+                  <span class="payment-info">
                   <span class="payment-name">🤝 Mercado Pago</span>
                   <span class="payment-desc">Usa tu saldo o meses sin intereses.</span>
-                </div>
-              </label>
+                </span>
+                </label>
 
-              <label :class="{ active: metodoPago === 'hotel' }" class="payment-option">
-                <input v-model="metodoPago" name="pago" type="radio" value="hotel">
-                <div class="payment-info">
+                <label :class="{ active: metodoPago === 'hotel' }" class="payment-option">
+                  <input v-model="metodoPago" name="pago" type="radio" value="hotel">
+                  <span class="payment-info">
                   <span class="payment-name">🛎️ Pagar en el Lobby</span>
                   <span class="payment-desc">Paga al momento de hacer Check-in.</span>
-                </div>
-              </label>
-            </div>
-
-            <transition name="fade">
-              <div v-if="metodoPago === 'tarjeta'" class="mock-card-form">
-                <div class="form-group">
-                  <label>Número de Tarjeta</label>
-                  <input maxlength="19" placeholder="0000 0000 0000 0000" required type="text">
-                </div>
-                <div class="card-row">
-                  <div class="form-group">
-                    <label>Vencimiento (MM/AA)</label>
-                    <input maxlength="5" placeholder="12/28" required type="text">
-                  </div>
-                  <div class="form-group">
-                    <label>CVV</label>
-                    <input maxlength="4" placeholder="123" required type="password">
-                  </div>
-                </div>
+                </span>
+                </label>
               </div>
-            </transition>
 
-            <transition name="fade">
-              <div v-if="metodoPago === 'mercadopago'" class="mp-message">
-                <p>Serás redirigido al entorno seguro de Mercado Pago al hacer clic en Confirmar.</p>
+              <transition name="fade">
+                <div v-if="metodoPago === 'tarjeta'" class="mock-card-form">
+                  <div class="form-group">
+                    <label>Número de Tarjeta</label>
+                    <input maxlength="19" placeholder="0000 0000 0000 0000" required type="text">
+                  </div>
+                  <div class="card-row">
+                    <div class="form-group">
+                      <label>Vencimiento (MM/AA)</label>
+                      <input maxlength="5" placeholder="12/28" required type="text">
+                    </div>
+                    <div class="form-group">
+                      <label>CVV</label>
+                      <input maxlength="4" placeholder="123" required type="password">
+                    </div>
+                  </div>
+                </div>
+              </transition>
+
+              <transition name="fade">
+                <div v-if="metodoPago === 'mercadopago'" class="mp-message">
+                  <p>Serás redirigido al entorno seguro de Mercado Pago al hacer clic en Confirmar.</p>
+                </div>
+              </transition>
+            </div>
+
+            <div class="form-checkbox">
+              <input id="terminos" v-model="datosCliente.aceptaTerminos" required type="checkbox">
+              <label for="terminos">Acepto los términos y políticas de Quinta Dalam.</label>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px; display: flex; justify-content: center;">
+              <div id="captcha-dalam"></div>
+            </div>
+
+            <button :disabled="procesando" class="btn-continuar" type="submit">
+              <span v-if="procesando">Procesando... ⏳</span>
+              <span v-else>
+                {{ metodoPago === 'hotel' ? 'Confirmar Reserva' : 'Pagar ' + formatoMoneda(total) }}
+              </span>
+            </button>
+
+          </form>
+        </div>
+      </section>
+
+      <aside v-if="habitacionSeleccionada" class="checkout-summary">
+        <div class="summary-card">
+          <div class="summary-img-wrapper">
+            <img :alt="`Habitación ${habitacionSeleccionada.nombre}`"
+                 :src="habitacionSeleccionada.imagenes && habitacionSeleccionada.imagenes.length ? habitacionSeleccionada.imagenes[0] : '/src/images/hotel.webp'">
+          </div>
+          <div class="summary-body">
+            <span class="room-type">{{ habitacionSeleccionada.tipo }}</span>
+            <h3 class="room-name">{{ habitacionSeleccionada.nombre }}</h3>
+            <div class="stay-details">
+              <div class="stay-date">
+                <small>Entrada</small>
+                <p>{{ formatoElegante(fechaEntrada) }}</p>
               </div>
-            </transition>
-          </div>
-
-          <div class="form-checkbox">
-            <input id="terminos" v-model="datosCliente.aceptaTerminos" required type="checkbox">
-            <label for="terminos">Acepto los términos y políticas de cancelación de Quinta Dalam.</label>
-          </div>
-
-          <button :disabled="procesando" class="btn-continuar" type="submit">
-            <span v-if="procesando">Procesando... ⏳</span>
-            <span v-else>
-              {{ metodoPago === 'hotel' ? 'Confirmar Reserva' : 'Pagar ' + formatoMoneda(total) }}
-            </span>
-          </button>
-        </form>
-      </div>
-    </section>
-
-    <aside v-if="habitacionSeleccionada" class="checkout-summary">
-      <div class="summary-card">
-        <div class="summary-img-wrapper">
-          <img :alt="`Habitación ${habitacionSeleccionada.nombre}`"
-               :src="habitacionSeleccionada.imagenes && habitacionSeleccionada.imagenes.length ? habitacionSeleccionada.imagenes[0] : '/src/images/hotel.webp'">
-        </div>
-        <div class="summary-body">
-          <span class="room-type">{{ habitacionSeleccionada.tipo }}</span>
-          <h3 class="room-name">{{ habitacionSeleccionada.nombre }}</h3>
-          <div class="stay-details">
-            <div class="stay-date">
-              <small>Entrada</small>
-              <p>{{ formatoElegante(fechaEntrada) }}</p>
+              <div class="stay-date">
+                <small>Salida</small>
+                <p>{{ formatoElegante(fechaSalida) }}</p>
+              </div>
             </div>
-            <div class="stay-date">
-              <small>Salida</small>
-              <p>{{ formatoElegante(fechaSalida) }}</p>
+            <p class="stay-duration">🕒 Estancia de <strong>{{ noches }} {{ noches === 1 ? 'noche' : 'noches' }}</strong></p>
+          </div>
+          <div class="precio-desglose">
+            <div class="precio-linea">
+              <span>{{ noches }} {{ noches === 1 ? 'noche' : 'noches' }} x {{ formatoMoneda(precioPorNoche) }}</span>
+              <span>{{ formatoMoneda(subtotal) }}</span>
+            </div>
+            <div class="precio-linea descuento">
+              <span>Descuento Web (5%)</span>
+              <span>-{{ formatoMoneda(descuento) }}</span>
+            </div>
+            <div class="precio-total">
+              <span>Total a pagar</span>
+              <span>{{ formatoMoneda(total) }}</span>
             </div>
           </div>
-          <p class="stay-duration">🕒 Estancia de <strong>{{ noches }} {{ noches === 1 ? 'noche' : 'noches' }}</strong>
-          </p>
         </div>
-        <div class="precio-desglose">
-          <div class="precio-linea">
-            <span>{{ noches }} {{ noches === 1 ? 'noche' : 'noches' }} x {{ formatoMoneda(precioPorNoche) }}</span>
-            <span>{{ formatoMoneda(subtotal) }}</span>
-          </div>
-          <div class="precio-linea descuento">
-            <span>Descuento Web (5%)</span>
-            <span>-{{ formatoMoneda(descuento) }}</span>
-          </div>
-          <div class="precio-total">
-            <span>Total a pagar</span>
-            <span>{{ formatoMoneda(total) }}</span>
-          </div>
-        </div>
-      </div>
-    </aside>
+      </aside>
 
-    <div v-if="procesando" class="loading-overlay">
-      <div class="loading-modal">
-        <div class="spinner-big">💳</div>
-        <h3>{{ metodoPago === 'hotel' ? 'Confirmando Reserva...' : 'Validando pago con el banco...' }}</h3>
-        <p>Por favor no cierres ni actualices esta ventana.</p>
+      <div v-if="procesando" class="loading-overlay">
+        <div class="loading-modal">
+          <div class="spinner-big">💳</div>
+          <h3>{{ metodoPago === 'hotel' ? 'Confirmando Reserva...' : 'Validando pago con el banco...' }}</h3>
+          <p>Por favor no cierres ni actualices esta ventana.</p>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </template>
 
 <script setup>
-import {computed, onMounted, ref} from 'vue'
-import {useRouter} from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const habitacionSeleccionada = ref(null)
 
-// 1. CARGAR HABITACIÓN
 onMounted(async () => {
   const idOculto = localStorage.getItem('habitacionSeleccionada')
   if (!idOculto) {
@@ -195,14 +197,24 @@ onMounted(async () => {
   } catch (error) {
     console.error(error);
   }
-})
 
-// 2. DATOS
+  setTimeout(() => {
+    if (window.grecaptcha && document.getElementById('captcha-dalam')) {
+      if (document.getElementById('captcha-dalam').innerHTML === '') {
+        window.grecaptcha.render('captcha-dalam', {
+          'sitekey': '6LfVNLYsAAAAACA8yeVST1gqXApSBEZ_yofbaZGf'
+        });
+      } else {
+        window.grecaptcha.reset();
+      }
+    }
+  }, 500);
+});
+
 const datosCliente = ref({nombre: '', apellidos: '', email: '', telefono: '', aceptaTerminos: false})
-const metodoPago = ref('tarjeta') // Por defecto tarjeta
+const metodoPago = ref('tarjeta')
 const procesando = ref(false)
 
-// 3. FECHAS Y PRECIOS
 const formatoInput = (f) => `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, '0')}-${String(f.getDate()).padStart(2, '0')}`
 const hoy = new Date()
 const manana = new Date()
@@ -219,11 +231,7 @@ const validarFechas = () => {
 }
 
 const noches = computed(() => Math.max(1, Math.ceil((new Date(fechaSalida.value) - new Date(fechaEntrada.value)) / 86400000)))
-const formatoElegante = (fs) => new Intl.DateTimeFormat('es-MX', {
-  weekday: 'short',
-  day: 'numeric',
-  month: 'short'
-}).format(new Date(fs + 'T00:00:00'))
+const formatoElegante = (fs) => new Intl.DateTimeFormat('es-MX', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(fs + 'T00:00:00'))
 const formatoMoneda = (v) => new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'}).format(v)
 
 const precioPorNoche = computed(() => habitacionSeleccionada.value ? habitacionSeleccionada.value.precioBase : 0)
@@ -231,12 +239,19 @@ const subtotal = computed(() => noches.value * precioPorNoche.value)
 const descuento = computed(() => subtotal.value * 0.05)
 const total = computed(() => subtotal.value - descuento.value)
 
-// 4. PROCESAR
 const procesarPago = async () => {
+  const captchaResponse = window.grecaptcha ? window.grecaptcha.getResponse() : '';
+
+  if (!captchaResponse) {
+    alert("Por favor, marca la casilla de 'No soy un robot' para continuar.");
+    return;
+  }
+
   procesando.value = true;
 
   setTimeout(async () => {
     const payloadReserva = {
+      captchaToken: captchaResponse,
       habitacion_id: habitacionSeleccionada.value.id,
       nombre_cliente: datosCliente.value.nombre,
       apellidos: datosCliente.value.apellidos,
@@ -250,11 +265,12 @@ const procesarPago = async () => {
     try {
       const respuesta = await fetch('http://localhost:3000/api/reservas', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payloadReserva)
       });
 
       const data = await respuesta.json();
+
       if (respuesta.ok) {
         const ticketData = {
           folio: data.reserva.id,
@@ -268,19 +284,21 @@ const procesarPago = async () => {
         };
         localStorage.setItem('ticket_dalam', JSON.stringify(ticketData));
         localStorage.removeItem('habitacionSeleccionada');
-
         router.push('/ticket');
       } else {
         alert(data.error || 'Hubo un problema al procesar tu reserva.');
+        if (window.grecaptcha) window.grecaptcha.reset();
       }
     } catch (error) {
       alert('Error de conexión con el servidor.');
+      if (window.grecaptcha) window.grecaptcha.reset();
     } finally {
       procesando.value = false;
     }
   }, 2500);
-}
+};
 </script>
+
 
 <style scoped>
 .checkout-header {
@@ -650,14 +668,6 @@ const procesarPago = async () => {
   }
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
 
 @media (max-width: 900px) {
   .checkout-container {
