@@ -23,7 +23,7 @@
           <p><strong>Dirección:</strong><br>Av. Acueducto 197<br>Centro Histórico<br>58000 Morelia, Mich.</p>
           <p><strong>Teléfono:</strong><br>443 343 0660<br>443 343 0662</p>
           <p><strong>WhatsApp:</strong><br>+52 (443) 682 5042</p>
-          <p><strong>Correo:</strong><br>reservaciones@casasandiegomorelia.com</p>
+          <p><strong>Correo:</strong><br>reservaciones@quintadalam.com</p>
         </div>
         <div class="contacto-con-mapa">
           <div class="mapa-izquierda">
