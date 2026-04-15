@@ -1,12 +1,13 @@
 <template>
   <div class="login-wrapper">
-    <div class="card login-card">
+    <div class="login-card">
 
-      <div class="header-content" style="text-align: center; margin-bottom: 2rem;">
-        <div style="font-size: 3rem; margin-bottom: 10px;">Bienvenido</div>
-        <h2>Acceso Administrativo</h2>
-        <p class="subtitle">Hotel Quinta Dalam</p>
+      <div class="logo-ring">
+        <div class="logo-inner">Q</div>
       </div>
+
+      <h1>Bienvenido</h1>
+      <p class="subtitle">Hotel Quinta Dalam</p>
 
       <form @submit.prevent="procesarLogin">
         <div class="form-group">
@@ -33,31 +34,27 @@
           >
         </div>
 
-        <div v-if="mensajeError" class="error-msg">
-          ⚠️ {{ mensajeError }}
-        </div>
-
-        <div class="form-actions" style="margin-top: 1.5rem;">
-          <button :disabled="cargando" class="btn-primary" style="width: 100%; justify-content: center;" type="submit">
-            {{ cargando ? 'Verificando...' : 'Iniciar Sesión' }}
-          </button>
-        </div>
-        <div class="form-group" style="background: #f4f7fb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-          <label style="color: #082B59; font-weight: bold; margin-bottom: 10px;">
-            🛡️ Verificación de Seguridad: ¿Cuánto es {{ captchaNum1 }} + {{ captchaNum2 }}?
-          </label>
+        <div class="captcha-box">
+          <label>Verificación de seguridad — ¿Cuánto es {{ captchaNum1 }} + {{ captchaNum2 }}?</label>
           <input
               v-model="captchaInput"
               type="number"
               placeholder="Respuesta"
               required
-              style="width: 100%; text-align: center; font-size: 1.2rem;"
           >
         </div>
+
+        <div v-if="mensajeError" class="error-msg">
+          <span>⚠</span> {{ mensajeError }}
+        </div>
+
+        <button :disabled="cargando" class="btn-primary" type="submit">
+          {{ cargando ? 'Verificando...' : 'Iniciar sesión' }}
+        </button>
       </form>
 
-      <div style="text-align: center; margin-top: 2rem;">
-        <RouterLink class="btn-back" to="/">&larr; Volver al inicio</RouterLink>
+      <div class="footer">
+        <RouterLink class="btn-back" to="/">&#8592; Volver al inicio</RouterLink>
       </div>
     </div>
   </div>
@@ -74,12 +71,10 @@ const password = ref('');
 const mensajeError = ref('');
 const cargando = ref(false);
 
-// Variables del CAPTCHA
 const captchaNum1 = ref(0);
 const captchaNum2 = ref(0);
 const captchaInput = ref('');
 
-// Generar Captcha al iniciar
 onMounted(() => {
   generarCaptcha();
 });
@@ -90,29 +85,22 @@ const generarCaptcha = () => {
   captchaInput.value = '';
 };
 
-// Función unificada
 const procesarLogin = async () => {
-  mensajeError.value = ''; // Limpiamos errores anteriores
+  mensajeError.value = '';
 
-  // 1. Validamos el CAPTCHA antes de tocar el servidor
   if (parseInt(captchaInput.value) !== (captchaNum1.value + captchaNum2.value)) {
-    // Usamos mensajeError.value (no error.value)
-    mensajeError.value = "CAPTCHA incorrecto. ¿Eres un bot 🤖?";
-    generarCaptcha(); // Cambiamos los números si falla
-    return; // El return detiene el código aquí para que no haga la petición
+    mensajeError.value = "CAPTCHA incorrecto. ¿Eres un bot?";
+    generarCaptcha();
+    return;
   }
 
-  // 2. Si el CAPTCHA está bien, continuamos con el Login normal
   cargando.value = true;
 
   try {
     const respuesta = await fetch('http://localhost:3000/api/login', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value, password: password.value })
     });
 
     const datos = await respuesta.json();
@@ -122,7 +110,7 @@ const procesarLogin = async () => {
       await router.push('/admin');
     } else {
       mensajeError.value = datos.error || 'Credenciales inválidas';
-      generarCaptcha(); // Opcional: Generar nuevo captcha si falla la contraseña
+      generarCaptcha();
     }
   } catch (error) {
     console.error(error);
@@ -134,51 +122,179 @@ const procesarLogin = async () => {
 </script>
 
 <style scoped>
-
-.form-group label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 12px 15px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: inherit;
-  transition: all 0.3s;
-  box-sizing: border-box;
-}
-
 .login-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #eaa4db 0%, #af257e 100%);
-  padding: 20px;
-  margin: 50px auto;
+  background: linear-gradient(150deg, #F9A8E3 0%, #FCD6F3 45%, #f26bce 100%);
+  padding: 24px;
 }
 
 .login-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 36px;
   width: 100%;
   max-width: 400px;
-  padding: 40px 30px;
+}
+
+.logo-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #FBEAF0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  border: 2px solid #ED93B1;
+}
+
+.logo-inner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f26bce, #f26bce);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 500;
+  text-align: center;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #f26bce;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border 0.2s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border: 1.5px solid #f26bce;
+}
+
+.captcha-box {
+  background: #FBEAF0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.captcha-box label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.captcha-box input {
+  width: 100%;
+  padding: 9px 14px;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  font-family: inherit;
   background: white;
-  margin: 50px auto;
+  color: #000000;
+  box-sizing: border-box;
+}
+
+.captcha-box input:focus {
+  outline: none;
+  border: 1.5px solid #f26bce;
 }
 
 .error-msg {
-  color: #d32f2f;
-  font-size: 0.85rem;
+  background: #FCEBEB;
+  border: 1px solid #F09595;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #f26bce;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #f26bce, #f26bce);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 8px;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.footer {
   text-align: center;
-  margin-top: -10px;
-  margin-bottom: 10px;
-  font-weight: bold;
+  margin-top: 20px;
+}
+
+.btn-back {
+  font-size: 13px;
+  color: #000000;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.btn-back:hover {
+  text-decoration: underline;
 }
 </style>

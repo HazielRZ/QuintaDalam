@@ -103,7 +103,7 @@ const secciones = [
   <!-- MAIN CONTENIDO -->
   <main class="home-main">
 
-    <!-- ABOUT -->
+        <!-- ABOUT -->
     <section class="about-section">
       <div class="about-inner">
         <div class="about-text">
@@ -116,22 +116,39 @@ const secciones = [
           </p>
           <RouterLink class="btn-magenta" to="/conocenos">Conoce más</RouterLink>
         </div>
-        <div class="about-stats">
-          <div class="stat-card">
-            <span class="stat-num">10+</span>
-            <span class="stat-label">Años de experiencia</span>
+        
+        <div class="about-right-col">
+          <!-- VIDEO -->
+          <div class="about-video-container">
+            <video 
+              controls 
+              autoplay="autoplay"
+              muted
+              loop
+              class="about-video"
+            >
+              <source src="/src/video/Presentacion.mp4" type="video/mp4">
+            </video>
           </div>
-          <div class="stat-card">
-            <span class="stat-num">500+</span>
-            <span class="stat-label">Huéspedes felices</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-num">100%</span>
-            <span class="stat-label">Atención personalizada</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-num">4.9★</span>
-            <span class="stat-label">Calificación promedio</span>
+          <p></p>
+          <!-- ESTADÍSTICAS (las que ya tenías) -->
+          <div class="about-stats">
+            <div class="stat-card">
+              <div class="stat-num">10+</div>
+              <div class="stat-label">Años de experiencia</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">500+</div>
+              <div class="stat-label">Huéspedes felices</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">100%</div>
+              <div class="stat-label">Atención personalizada</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">4.9★</div>
+              <div class="stat-label">Calificación promedio</div>
+            </div>
           </div>
         </div>
       </div>
@@ -468,7 +485,7 @@ const secciones = [
 }
 
 .about-desc {
-  font-size: 0.9rem;
+  font-size: 1.0rem;
   color: #555;
   line-height: 1.8;
   margin: 0 0 28px;
@@ -735,5 +752,14 @@ const secciones = [
   .secciones-grid {
     grid-template-columns: 1fr;
   }
+}
+.about-video {
+  width: 100%;
+  height: auto;
+  max-height: 400px;  /* ← Cambia este valor: 200px, 250px, 300px, etc. */
+  object-fit: cover;   /* Esto hace que el video se recorte si es necesario */
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 </style>
