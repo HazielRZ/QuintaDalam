@@ -28,11 +28,11 @@
               <div class="datos-grid">
                 <div class="form-group">
                   <label for="nombre">Nombre(s)</label>
-                  <input id="nombre" v-model="datosCliente.nombre" placeholder="Ej. Juan" required type="text">
+                  <input id="nombre" v-model="datosCliente.nombre" placeholder="Ej. Nombre" required type="text">
                 </div>
                 <div class="form-group">
                   <label for="apellidos">Apellidos</label>
-                  <input id="apellidos" v-model="datosCliente.apellidos" placeholder="Ej. Pérez" required type="text">
+                  <input id="apellidos" v-model="datosCliente.apellidos" placeholder="Ej. Apellido" required type="text">
                 </div>
                 <div class="form-group">
                   <label for="email">Correo Electrónico</label>
@@ -40,7 +40,18 @@
                 </div>
                 <div class="form-group">
                   <label for="telefono">Teléfono</label>
-                  <input id="telefono" v-model="datosCliente.telefono" placeholder="10 dígitos" required type="tel">
+                  <input
+                      id="telefono"
+                      v-model="datosCliente.telefono"
+                      placeholder="Ej. 4431234567"
+                      required
+                      type="tel"
+                      maxlength="10"
+                      minlength="10"
+                      pattern="[0-9]{10}"
+                      title="Por favor, ingresa exactamente 10 dígitos numéricos."
+                      @input="validarTelefono"
+                  >
                 </div>
               </div>
             </div>
@@ -197,6 +208,12 @@ onMounted(async () => {
   } catch (error) {
     console.error(error);
   }
+  // Limpia el input en tiempo real para aceptar solo números
+  const validarTelefono = (event) => {
+    let valor = event.target.value;
+    valor = valor.replace(/\D/g, '');
+    datosCliente.value.telefono = valor;
+  };
 
   setTimeout(() => {
     if (window.grecaptcha && document.getElementById('captcha-dalam')) {
@@ -284,7 +301,7 @@ const procesarPago = async () => {
         };
         localStorage.setItem('ticket_dalam', JSON.stringify(ticketData));
         localStorage.removeItem('habitacionSeleccionada');
-        router.push('/ticket');
+        await router.push('/ticket');
       } else {
         alert(data.error || 'Hubo un problema al procesar tu reserva.');
         if (window.grecaptcha) window.grecaptcha.reset();
