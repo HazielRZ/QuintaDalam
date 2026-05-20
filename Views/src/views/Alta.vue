@@ -147,15 +147,22 @@ const formulario = reactive({
 const toast = reactive({visible: false, mensaje: '', tipo: 'success'});
 
 // 1. LEER (GET)
+// 1. LEER (GET)
 const cargarDatos = async () => {
   try {
-    const respuesta = await fetch(API_URL);
+    // Agregamos la ruta exacta del endpoint usando backticks
+    const respuesta = await fetch(`${API_URL}/api/habitaciones`);
+
+    // Validamos que la respuesta sea exitosa antes de convertirla
+    if (!respuesta.ok) throw new Error('Error en la petición');
+
     const datos = await respuesta.json();
     habitaciones.value = datos.map(hab => ({
       ...hab,
       precioBase: parseFloat(hab.precio_base)
     }));
   } catch (error) {
+    console.error(error);
     mostrarToast('Error al conectar con la base de datos.', 'error');
   }
 };
@@ -177,21 +184,23 @@ const procesarFormulario = async () => {
 
   try {
     if (modoEdicion.value) {
-      await fetch(`${API_URL}/${formulario.id}`, {
+      // CORRECCIÓN: Ruta PUT
+      await fetch(`${API_URL}/api/habitaciones/${formulario.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // 🛡️ Pase VIP para editar
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(habitacionFinal)
       });
       mostrarToast('Habitación actualizada correctamente.', 'success');
     } else {
-      await fetch(API_URL, {
+      // CORRECCIÓN: Ruta POST
+      await fetch(`${API_URL}/api/habitaciones`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // 🛡️ Pase VIP para crear
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(habitacionFinal)
       });
@@ -211,7 +220,8 @@ const eliminarHabitacion = async () => {
   const token = localStorage.getItem('token_dalam');
 
   try {
-    await fetch(`${API_URL}/${idHabitacion}`, {
+    // CORRECCIÓN: Ruta DELETE
+    await fetch(`${API_URL}/api/habitaciones/${idHabitacion}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -224,7 +234,6 @@ const eliminarHabitacion = async () => {
     mostrarToast('No se pudo eliminar la habitación.', 'error');
   }
 };
-
 // LÓGICA DE INTERFAZ
 const iniciarEdicion = (index) => {
   const hab = habitaciones.value[index];
