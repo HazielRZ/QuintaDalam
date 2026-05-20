@@ -10,13 +10,14 @@ const errorConexion = ref(false);
 
 onMounted(async () => {
   try {
-
     const {llegada, salida, pax} = route.query;
+    const apiUrl = import.meta.env.VITE_API_URL || '';
 
-    let url = 'http://localhost:3000/api/habitaciones';
+    let url = `${apiUrl}/api/habitaciones`;
 
     if (llegada && salida) {
-      url = `http://localhost:3000/api/disponibilidad?llegada=${llegada}&salida=${salida}&pax=${pax}`;
+
+      url = `${apiUrl}/api/disponibilidad?llegada=${llegada}&salida=${salida}&pax=${pax}`;
     }
 
     const respuesta = await fetch(url);

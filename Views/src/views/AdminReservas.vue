@@ -81,8 +81,10 @@ const cargando = ref(true);
 
 const cargarReservas = async () => {
   const token = localStorage.getItem('token_dalam');
+  const apiUrl = import.meta.env.VITE_API_URL || '';
+
   try {
-    const respuesta = await fetch('http://localhost:3000/api/reservas', {
+    const respuesta = await fetch(`${apiUrl}/api/reservas`, {
       headers: {'Authorization': `Bearer ${token}`}
     });
 
