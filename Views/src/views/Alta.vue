@@ -124,7 +124,7 @@
 import {onMounted, reactive, ref} from 'vue';
 import {RouterLink} from 'vue-router'; // Lo volvemos a importar para evitar que WebStorm o Vue se quejen
 
-const API_URL = 'http://localhost:3000/api/habitaciones';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 const habitaciones = ref([]);
 const modoEdicion = ref(false);
