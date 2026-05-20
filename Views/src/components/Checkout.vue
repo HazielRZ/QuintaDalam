@@ -186,6 +186,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const habitacionSeleccionada = ref(null)
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 onMounted(async () => {
   const idOculto = localStorage.getItem('habitacionSeleccionada')
@@ -195,7 +196,7 @@ onMounted(async () => {
     return;
   }
   try {
-    const respuesta = await fetch('http://localhost:3000/api/habitaciones');
+    const respuesta = await fetch(`${API_BASE_URL}/api/habitaciones`);
     const datos = await respuesta.json();
     const habitacionesBD = datos.map(hab => ({
       ...hab,
@@ -280,7 +281,7 @@ const procesarPago = async () => {
     };
 
     try {
-      const respuesta = await fetch('http://localhost:3000/api/reservas', {
+      const respuesta = await fetch(`${API_BASE_URL}/api/reservas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payloadReserva)
