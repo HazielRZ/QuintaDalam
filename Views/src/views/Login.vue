@@ -96,13 +96,16 @@ const procesarLogin = async () => {
 
   cargando.value = true;
 
+  // 1. Capturamos la URL de CloudFront desde las variables de entorno de Vite
+  const apiUrl = import.meta.env.VITE_API_URL || '';
+
   try {
-    const respuesta = await fetch('http://localhost:3000/api/login', {
+    // 2. Reemplazamos el localhost inyectando la variable con backticks
+    const respuesta = await fetch(`${apiUrl}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value, password: password.value })
     });
-
     const datos = await respuesta.json();
 
     if (respuesta.ok) {
